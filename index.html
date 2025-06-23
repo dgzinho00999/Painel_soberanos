@@ -9,24 +9,35 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="/icon-192x192.png">
     
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts - Orbitron -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* Variáveis CSS para Cores Principais */
+        :root {
+            --primary-purple: #8a2be2;
+            --secondary-blue: #00bfff;
+            --dark-background: #0d0d1a;
+            --card-background: #1a1a2e;
+            --text-light: #e0e0e0;
+            --text-dark-gray: #4a4a70;
+            --success-green: #32cd32;
+            --warning-yellow: #ffd700;
+            --error-red: #ff6347;
+            --cyan-accent: #00bcd4;
+        }
+
         /* Estilos personalizados */
         body {
             font-family: 'Orbitron', sans-serif;
-            background-color: #0d0d1a; /* Fundo preto profundo */
-            color: #e0e0e0;
+            background-color: var(--dark-background); /* Fundo preto profundo */
+            color: var(--text-light);
             margin: 0;
             padding: 0;
             overflow-x: hidden; /* Evita rolagem horizontal */
         }
         .card {
-            background-color: #1a1a2e; /* Fundo escuro para cards */
+            background-color: var(--card-background); /* Fundo escuro para cards */
             border-radius: 1rem;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
@@ -34,31 +45,40 @@
             border: 2px solid;
             transition: all 0.3s ease;
         }
-        .card-purple { border-color: #8a2be2; } /* Roxo */
-        .card-blue { border-color: #00bfff; } /* Azul */
+        .card-purple { border-color: var(--primary-purple); } /* Roxo */
+        .card-blue { border-color: var(--secondary-blue); } /* Azul */
         .card-red { border-color: #ff4500; }  /* Vermelho/Laranja */
-        .card-green { border-color: #32cd32; } /* Verde para dicas da IA */
-        .card-yellow { border-color: #ffd700; } /* Amarelo para treino */
-        .card-cyan { border-color: #00bcd4; } /* Ciano para glossário */
+        .card-green { border-color: var(--success-green); } /* Verde para dicas da IA */
+        .card-yellow { border-color: var(--warning-yellow); } /* Amarelo para treino */
+        .card-cyan { border-color: var(--cyan-accent); } /* Ciano para glossário */
 
+        /* Estado de Focus Aprimorado */
+        /* Aplica um outline mais visível e animado para acessibilidade */
+        *:focus-visible {
+            outline: 2px solid var(--secondary-blue);
+            outline-offset: 2px;
+            border-radius: 0.5rem; /* Para combinar com os botões */
+            transition: outline-color 0.2s ease-in-out;
+        }
 
         .btn-option {
             background-color: #2a2a4a;
-            border: 1px solid #4a4a70;
-            color: #e0e0e0;
+            border: 1px solid var(--text-dark-gray);
+            color: var(--text-light);
             padding: 0.75rem 0.5rem; /* Menor padding em mobile */
             border-radius: 0.75rem;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.2s ease-in-out, transform 0.1s ease-out; /* Adicionado transform para feedback de clique */
             cursor: pointer;
             display: flex;
             flex-direction: column; /* Coloca ícone e texto em coluna */
             align-items: center;
             justify-content: center;
             gap: 0.25rem; /* Menor gap */
-            font-size: 0.8rem; /* Menor fonte em mobile */
+            font-size: 0.8rem;
             text-align: center;
             flex-grow: 1;
             min-height: 60px; /* Altura mínima para facilitar toque */
+            position: relative; /* Para o tooltip */
         }
         @media (min-width: 640px) { /* Aumenta padding e fonte em telas maiores */
             .btn-option {
@@ -75,15 +95,19 @@
             transform: translateY(-2px);
             box-shadow: 0 0 10px rgba(74, 74, 112, 0.5);
         }
+        /* Animação de feedback ao clicar/ativar */
+        .btn-option:active {
+            transform: scale(0.98);
+        }
         .btn-option.active {
-            background-color: #8a2be2; /* Roxo vibrante para ativo */
+            background-color: var(--primary-purple); /* Roxo vibrante para ativo */
             border-color: #c080ff;
             box-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
             color: white;
             transform: scale(1.02);
         }
         .btn-action {
-            background: linear-gradient(90deg, #8a2be2, #00bfff); /* Gradiente para botões de ação */
+            background: linear-gradient(90deg, var(--primary-purple), var(--secondary-blue)); /* Gradiente para botões de ação */
             color: white;
             padding: 1rem 1.5rem;
             border-radius: 0.75rem;
@@ -95,7 +119,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
         .btn-action:hover {
-            background: linear-gradient(90deg, #00bfff, #8a2be2);
+            background: linear-gradient(90deg, var(--secondary-blue), var(--primary-purple));
             transform: translateY(-3px) scale(1.02);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
         }
@@ -110,9 +134,9 @@
             display: inline-block;
             margin-left: 0.5rem;
         }
-        .feedback-excellent { color: #32cd32; } /* Verde vibrante */
-        .feedback-good { color: #ffd700; }    /* Amarelo dourado */
-        .feedback-low { color: #ff6347; }     /* Vermelho tomate */
+        .feedback-excellent { color: var(--success-green); } /* Verde vibrante */
+        .feedback-good { color: var(--warning-yellow); }    /* Amarelo dourado */
+        .feedback-low { color: var(--error-red); }     /* Vermelho tomate */
 
         /* Animação de entrada sutil para cards */
         .fade-in {
@@ -123,19 +147,27 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Transição de Fundo Dinâmicas para Abas */
+        .tab-button {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .tab-button.active {
+             /* Já tem transição, mas garantindo que seja suave */
+        }
+
         /* Estilo para a barra de navegação inferior (apenas visual) */
         .bottom-nav {
-            background-color: #1a1a2e;
-            border-top: 1px solid #4a4a70;
+            background-color: var(--card-background);
+            border-top: 1px solid var(--text-dark-gray);
             box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.4);
         }
         .bottom-nav-icon {
-            color: #e0e0e0;
+            color: var(--text-light);
             font-size: 1.5rem;
             transition: color 0.2s ease;
         }
         .bottom-nav-icon:hover {
-            color: #8a2be2;
+            color: var(--primary-purple);
         }
 
         /* Modal personalizado */
@@ -155,10 +187,10 @@
             backdrop-filter: blur(5px); /* Efeito de blur no fundo */
         }
         .modal-content {
-            background-color: #1a1a2e;
+            background-color: var(--card-background);
             margin: auto;
             padding: 2.5rem;
-            border: 2px solid #8a2be2;
+            border: 2px solid var(--primary-purple);
             border-radius: 1rem;
             width: 90%; /* Responsive width */
             max-width: 400px;
@@ -190,10 +222,10 @@
         .modal-message {
             margin-bottom: 1.5rem;
             font-size: 1.1rem;
-            color: #e0e0e0;
+            color: var(--text-light);
         }
         .modal-btn {
-            background: linear-gradient(90deg, #00bfff, #8a2be2);
+            background: linear-gradient(90deg, var(--secondary-blue), var(--primary-purple)); /* Gradiente para botões de ação */
             color: white;
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
@@ -215,7 +247,7 @@
             margin-left: 0.5rem;
         }
         .fine-tune-btn {
-            background-color: #4a4a70;
+            background-color: var(--text-dark-gray);
             color: white;
             border: none;
             border-radius: 0.3rem;
@@ -226,10 +258,14 @@
             justify-content: center;
             cursor: pointer;
             font-size: 1rem;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s ease, transform 0.1s ease-out; /* Adicionado transform */
+            position: relative; /* Para o tooltip */
         }
         .fine-tune-btn:hover {
             background-color: #6a6ad0;
+        }
+        .fine-tune-btn:active {
+            transform: scale(0.9); /* Feedback de clique */
         }
         
         /* Ajustes para grid em telas pequenas */
@@ -246,7 +282,7 @@
         .spinner {
             border: 4px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            border-top: 4px solid #8a2be2;
+            border-top: 4px solid var(--primary-purple);
             width: 30px;
             height: 30px;
             -webkit-animation: spin 1s linear infinite; /* Safari */
@@ -267,7 +303,7 @@
 
         /* Modal para Glossário */
         .glossary-modal-content {
-            background-color: #1a1a2e;
+            background-color: var(--card-background);
             padding: 2rem;
             border-radius: 1rem;
             width: 90%;
@@ -278,25 +314,26 @@
         }
         .glossary-term-btn {
             background-color: #2a2a4a;
-            border: 1px solid #4a4a70;
-            color: #e0e0e0;
+            border: 1px solid var(--text-dark-gray);
+            color: var(--text-light);
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
             transition: all 0.2s ease-in-out;
             cursor: pointer;
             font-size: 0.9rem;
             text-align: center;
+            position: relative; /* Para o tooltip */
         }
         .glossary-term-btn:hover {
             background-color: #3a3a6a;
-            border-color: #00bfff;
+            border-color: var(--secondary-blue);
         }
         .glossary-explanation {
             margin-top: 1.5rem;
             padding: 1rem;
             background-color: #2a2a4a;
             border-radius: 0.75rem;
-            border: 1px solid #00bcd4;
+            border: 1px solid var(--cyan-accent);
             min-height: 80px;
             display: flex;
             align-items: center;
@@ -318,11 +355,16 @@
             cursor: pointer;
             font-size: 0.8rem;
             margin-left: 0.5rem;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s ease, transform 0.1s ease-out;
+            position: relative; /* Para o tooltip */
         }
         .copy-btn:hover {
             background-color: #7a7aa0;
         }
+        .copy-btn:active {
+            transform: scale(0.9); /* Feedback de clique */
+        }
+
 
         /* Estilo para a mensagem de cópia */
         .copy-message {
@@ -337,21 +379,28 @@
             font-size: 0.9rem;
             z-index: 1000;
             opacity: 0;
-            transition: opacity 0.3s ease-in-out;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; /* Adicionado transform para animação */
         }
         .copy-message.show {
             opacity: 1;
+            transform: translateX(-50%) translateY(-5px); /* Desliza um pouco para cima */
         }
 
         /* Estilo para a animação do FPS */
         .fps-indicator-box {
             width: 20px;
             height: 20px;
-            background-color: #00bfff; /* Azul claro */
+            background-color: var(--secondary-blue); /* Azul claro */
             border-radius: 5px;
             margin-right: 10px;
             animation: pulse 1s infinite alternate;
+            transition: background-color 0.3s ease; /* Transição de cor */
         }
+        /* Cores dinâmicas para o FPS box */
+        .fps-indicator-box.excellent { background-color: var(--success-green); }
+        .fps-indicator-box.good { background-color: var(--warning-yellow); }
+        .fps-indicator-box.low { background-color: var(--error-red); }
+
 
         @keyframes pulse {
             0% { transform: scale(1); opacity: 1; }
@@ -359,16 +408,18 @@
         }
 
         /* Classes de feedback para FPS e Ping */
-        .performance-excellent { color: #32cd32; } /* Verde vibrante */
-        .performance-good { color: #ffd700; }    /* Amarelo dourado */
-        .performance-low { color: #ff6347; }     /* Vermelho tomate */
-        .performance-unknown { color: #e0e0e0; } /* Cor padrão para status desconhecido/carregando */
+        .performance-excellent { color: var(--success-green); } /* Verde vibrante */
+        .performance-good { color: var(--warning-yellow); }    /* Amarelo dourado */
+        .performance-low { color: var(--error-red); }     /* Vermelho tomate */
+        .performance-unknown { color: var(--text-light); } /* Cor padrão para status desconhecido/carregando */
 
 
         /* Estilo para o ID do usuário (ajuste para caber na linha em mobile) */
         #user-id-display {
             word-break: break-all;
             font-size: 0.7rem; /* Reduz um pouco o tamanho para mobile */
+            display: inline-block; /* Permite que o botão de copiar fique ao lado */
+            vertical-align: middle; /* Alinha com o botão */
         }
         @media (min-width: 640px) {
             #user-id-display {
@@ -385,8 +436,8 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            flex-direction: column;
+            /* Important: Default to hidden, will be set to flex by JS when needed */
+            flex-direction: column; 
             align-items: center;
             justify-content: center;
             z-index: 1000;
@@ -394,9 +445,13 @@
             font-size: 1.2rem;
             backdrop-filter: blur(5px);
             text-align: center;
+            display: none; /* Make it hidden by default in CSS */
         }
-        #calculate-loading-overlay .spinner {
-            margin-bottom: 1rem;
+        #calculate-loading-overlay.hidden {
+            display: none; /* Ensure the class can hide it */
+        }
+        #calculate-loading-overlay:not(.hidden) {
+            display: flex; /* Only show when 'hidden' class is not present */
         }
 
         /* Input fields for converter */
@@ -404,104 +459,152 @@
             width: 100%;
             padding: 0.75rem;
             border-radius: 0.5rem;
-            border: 1px solid #4a4a70;
+            border: 1px solid var(--text-dark-gray);
             background-color: #2a2a4a;
-            color: #e0e0e0;
+            color: var(--text-light);
             margin-bottom: 0.75rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
         .converter-input:focus {
             outline: none;
-            border-color: #8a2be2;
+            border-color: var(--primary-purple);
             box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.5);
+        }
+        /* Classes para feedback de erro nos inputs */
+        .converter-input.input-error {
+            border-color: var(--error-red);
+            box-shadow: 0 0 0 2px rgba(255, 99, 71, 0.5);
+        }
+        .error-message {
+            color: var(--error-red);
+            font-size: 0.8rem;
+            margin-top: -0.5rem; /* Ajusta a margem para ficar mais próximo do input */
+            margin-bottom: 0.75rem;
+            display: block; /* Garante que a mensagem fique em sua própria linha */
+        }
+
+
+        /* Tooltip Styles */
+        .tooltip {
+            position: absolute;
+            bottom: calc(100% + 5px); /* Acima do botão */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.4rem;
+            font-size: 0.75rem;
+            white-space: nowrap; /* Impede que o texto quebre linha */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+            z-index: 10;
+            pointer-events: none; /* Permite clicar através do tooltip */
+        }
+        .btn-option:hover .tooltip,
+        .fine-tune-btn:hover .tooltip,
+        .copy-btn:hover .tooltip,
+        .glossary-term-btn:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-5px); /* Pequeno slide-up ao aparecer */
         }
     </style>
 </head>
 <body class="bg-gray-900 min-h-screen flex flex-col items-center py-8 px-4 sm:px-6 text-white">
 
     <div class="w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl">
-        <!-- Header -->
         <header class="text-center mb-6 sm:mb-8 fade-in">
             <h1 class="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-400 mb-2">SOBERANOS TOOLS</h1>
             <p class="text-sm sm:text-md text-gray-400">Centro de Comando Gaming Avançado</p>
-            <p id="user-id-display" class="text-xs text-gray-500 mt-2">ID do Utilizador: Conectando à base de dados...</p>
+            <div class="flex items-center justify-center mt-2">
+                <p id="user-id-display" class="text-xs text-gray-500 mr-2">ID do Utilizador: Conectando à base de dados...</p>
+                <button id="copy-user-id-btn" class="copy-btn"><i class="fas fa-copy"></i><span class="tooltip">Copiar ID do Utilizador</span></button>
+            </div>
         </header>
 
-        <!-- Detecção do Dispositivo -->
-        <div id="device-detection" class="card card-purple mb-6 fade-in flex flex-col sm:flex-row items-center justify-center p-4">
-            <i class="fas fa-mobile-alt text-xl sm:text-2xl mr-0 sm:mr-3 mb-2 sm:mb-0 text-purple-400"></i>
-            <p class="text-md sm:text-xl font-semibold text-center"><span id="detected-device-info"></span></p>
-        </div>
-
-        <!-- Monitor de FPS -->
-        <div class="card card-green fade-in">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-green-300"><i class="fas fa-tachometer-alt mr-2"></i>Monitor de FPS</h2>
-            <div class="flex items-center justify-center">
-                <div class="fps-indicator-box"></div>
-                <p id="fps-display" class="text-3xl font-bold performance-unknown">-- FPS</p>
+        <main>
+            <div id="device-detection" class="card card-purple mb-6 fade-in flex flex-col sm:flex-row items-center justify-center p-4">
+                <i class="fas fa-mobile-alt text-xl sm:text-2xl mr-0 sm:mr-3 mb-2 sm:mb-0 text-purple-400"></i>
+                <p class="text-md sm:text-xl font-semibold text-center"><span id="detected-device-info"></span></p>
             </div>
-            <p class="text-xs text-gray-400 text-center mt-2">
-                Este é o FPS da interface do seu navegador, não do jogo.
-            </p>
-        </div>
 
-        <!-- Monitor de Ping -->
-        <div class="card card-red fade-in">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-red-300"><i class="fas fa-signal mr-2"></i>Monitor de Ping</h2>
-            <div class="flex items-center justify-center">
-                <p id="ping-display" class="text-3xl font-bold performance-unknown">Medindo...</p>
-            </div>
-            <p class="text-xs text-gray-400 text-center mt-2">
-                Latência da sua conexão geral à internet, não a de servidores de jogo.
-            </p>
-        </div>
-
-
-        <!-- Seção de Sensibilidade (Aba Ativa Visualmente) -->
-        <nav class="flex justify-around mb-6 sm:mb-8 fade-in">
-            <button class="flex-1 py-2 sm:py-3 text-sm sm:text-lg font-bold rounded-t-lg bg-purple-700 text-white shadow-lg tab-button active" data-tab="sensibilidade">Sensibilidade</button>
-            <button class="flex-1 py-2 sm:py-3 text-sm sm:text-lg font-bold rounded-t-lg bg-gray-700 text-gray-400 cursor-not-allowed tab-button" data-tab="otimizador">Otimizador</button>
-            <button class="flex-1 py-2 sm:py-3 text-sm sm:text-lg font-bold rounded-t-lg bg-gray-700 text-gray-400 cursor-not-allowed tab-button" data-tab="performance">Performance</button>
-            <button class="flex-1 py-2 sm:py-3 text-sm sm:text-lg font-bold rounded-t-lg bg-gray-700 text-gray-400 cursor-not-allowed tab-button" data-tab="booster">Booster</button>
-        </nav>
-
-        <div id="sensibilidade-tab-content" class="tab-content active">
-            <!-- Nível do Telemóvel -->
-            <div class="card card-blue fade-in">
-                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-blue-300"><i class="fas fa-mobile-alt mr-2"></i>Nível do Telemóvel</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                    <button class="btn-option" data-type="deviceLevel" data-value="Fraco">Fraco<span class="text-xs text-gray-400">Dispositivo básico</span></button>
-                    <button class="btn-option" data-type="deviceLevel" data-value="Médio">Médio<span class="text-xs text-gray-400">Dispositivo intermediário</span></button>
-                    <button class="btn-option" data-type="deviceLevel" data-value="Forte">Forte<span class="text-xs text-gray-400">Alto desempenho</span></button>
+            <div class="card card-green fade-in">
+                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-green-300"><i class="fas fa-tachometer-alt mr-2"></i>Monitor de FPS</h2>
+                <div class="flex items-center justify-center">
+                    <div class="fps-indicator-box"></div>
+                    <p id="fps-display" class="text-3xl font-bold performance-unknown">-- FPS</p>
                 </div>
+                <p class="text-xs text-gray-400 text-center mt-2">
+                    Este é o FPS da interface do seu navegador, não do jogo.
+                </p>
             </div>
 
-            <!-- Função no Time -->
             <div class="card card-red fade-in">
-                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-red-300"><i class="fas fa-users mr-2"></i>Função no Time</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                    <button class="btn-option" data-type="role" data-value="Rush"><i class="fas fa-running text-lg sm:text-xl"></i> Rush<span class="text-xs text-gray-400">Mov. rápida</span></button>
-                    <button class="btn-option" data-type="role" data-value="Suporte"><i class="fas fa-shield-alt text-lg sm:text-xl"></i> Suporte<span class="text-xs text-gray-400">Equilíbrio</span></button>
-                    <button class="btn-option" data-type="role" data-value="Granadeiro"><i class="fas fa-bomb text-lg sm:text-xl"></i> Granadeiro<span class="text-xs text-gray-400">Uso de granadas</span></button>
-                    <button class="btn-option" data-type="role" data-value="Atirador"><i class="fas fa-bullseye text-lg sm:text-xl"></i> Atirador<span class="text-xs text-gray-400">Longa distância</span></button>
+                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-red-300"><i class="fas fa-signal mr-2"></i>Monitor de Ping</h2>
+                <div class="flex items-center justify-center">
+                    <p id="ping-display" class="text-3xl font-bold performance-unknown">Medindo...</p>
                 </div>
+                <p class="text-xs text-gray-400 text-center mt-2">
+                    Latência da sua conexão geral à internet, não a de servidores de jogo.
+                </p>
             </div>
 
-            <!-- Estilo de Mira -->
-            <div class="card card-blue fade-in">
-                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-blue-300"><i class="fas fa-crosshairs mr-2"></i>Estilo de Mira</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    <button class="btn-option" data-type="aimStyle" data-value="Rápida"><i class="fas fa-bolt text-lg sm:text-xl"></i> Rápida<span class="text-xs text-gray-400">Combate curto</span></button>
-                    <button class="btn-option" data-type="aimStyle" data-value="Precisa"><i class="fas fa-eye text-lg sm:text-xl"></i> Precisa<span class="text-xs text-gray-400">Tiros certeiros</span></button>
+            <nav class="flex justify-around mb-6 sm:mb-8 fade-in">
+                <button class="flex-1 py-2 sm:py-3 text-sm sm:text-lg font-bold rounded-t-lg bg-purple-700 text-white shadow-lg tab-button active" data-tab="sensibilidade">Sensibilidade</button>
+                <button class="flex-1 py-2 sm:py-3 text-sm sm:text-lg font-bold rounded-t-lg bg-gray-700 text-gray-400 cursor-not-allowed tab-button" data-tab="otimizador" title="Em breve!">Otimizador</button>
+                <button class="flex-1 py-2 sm:py-3 text-sm sm:text-lg font-bold rounded-t-lg bg-gray-700 text-gray-400 cursor-not-allowed tab-button" data-tab="performance" title="Em breve!">Performance</button>
+                <button class="flex-1 py-2 sm:py-3 text-sm sm:text-lg font-bold rounded-t-lg bg-gray-700 text-gray-400 cursor-not-allowed tab-button" data-tab="booster" title="Em breve!">Booster</button>
+            </nav>
+
+            <div id="sensibilidade-tab-content" class="tab-content active">
+                <!-- Step 1: Nível do Telemóvel -->
+                <div id="step-1" class="calculation-step card card-blue fade-in">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-4 text-blue-300"><i class="fas fa-mobile-alt mr-2"></i>Passo 1 de 5: Nível do Telemóvel</h2>
+                    <p class="text-gray-400 text-sm mb-4 text-center">Comece selecionando o nível de desempenho do seu dispositivo.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                        <button class="btn-option" data-type="deviceLevel" data-value="Fraco">Fraco<span class="text-xs text-gray-400">Dispositivo básico</span></button>
+                        <button class="btn-option" data-type="deviceLevel" data-value="Médio">Médio<span class="text-xs text-gray-400">Dispositivo intermediário</span></button>
+                        <button class="btn-option" data-type="deviceLevel" data-value="Forte">Forte<span class="text-xs text-gray-400">Alto desempenho</span></button>
+                    </div>
+                    <button id="step-1-next" class="btn-action w-full mt-6">PRÓXIMO</button>
                 </div>
-            </div>
 
-            <!-- Módulo de Personalização -->
-            <div class="card card-purple fade-in">
-                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-purple-300"><i class="fas fa-sliders-h mr-2"></i>Personalização Avançada</h2>
-                <p class="text-gray-400 text-sm mb-4">Responda para uma sensibilidade mais própria ao seu estilo.</p>
+                <!-- Step 2: Função no Time -->
+                <div id="step-2" class="calculation-step card card-red fade-in hidden">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-4 text-red-300"><i class="fas fa-users mr-2"></i>Passo 2 de 5: Função no Time</h2>
+                    <p class="text-gray-400 text-sm mb-4 text-center">Qual é a sua principal função dentro do jogo?</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                        <button class="btn-option" data-type="role" data-value="Rush"><i class="fas fa-running text-lg sm:text-xl"></i> Rush<span class="text-xs text-gray-400">Mov. rápida</span></button>
+                        <button class="btn-option" data-type="role" data-value="Suporte"><i class="fas fa-shield-alt text-lg sm:text-xl"></i> Suporte<span class="text-xs text-gray-400">Equilíbrio</span></button>
+                        <button class="btn-option" data-type="role" data-value="Granadeiro"><i class="fas fa-bomb text-lg sm:text-xl"></i> Granadeiro<span class="text-xs text-gray-400">Uso de granadas</span></button>
+                        <button class="btn-option" data-type="role" data-value="Atirador"><i class="fas fa-bullseye text-lg sm:text-xl"></i> Atirador<span class="text-xs text-gray-400">Longa distância</span></button>
+                    </div>
+                    <div class="flex justify-between mt-6">
+                        <button id="step-2-prev" class="btn-action bg-gray-600 hover:bg-gray-700"><i class="fas fa-arrow-left mr-2"></i>VOLTAR</button>
+                        <button id="step-2-next" class="btn-action">PRÓXIMO</button>
+                    </div>
+                </div>
 
-                <div class="mb-5">
-                    <h3 class="text-lg font-semibold mb-2">1. Preferência de Giro (Sensibilidade Geral)</h3>
+                <!-- Step 3: Estilo de Mira -->
+                <div id="step-3" class="calculation-step card card-blue fade-in hidden">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-4 text-blue-300"><i class="fas fa-crosshairs mr-2"></i>Passo 3 de 5: Estilo de Mira</h2>
+                    <p class="text-gray-400 text-sm mb-4 text-center">Como você prefere sua mira?</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        <button class="btn-option" data-type="aimStyle" data-value="Rápida"><i class="fas fa-bolt text-lg sm:text-xl"></i> Rápida<span class="text-xs text-gray-400">Combate curto</span></button>
+                        <button class="btn-option" data-type="aimStyle" data-value="Precisa"><i class="fas fa-eye text-lg sm:text-xl"></i> Precisa<span class="text-xs text-gray-400">Tiros certeiros</span></button>
+                    </div>
+                    <div class="flex justify-between mt-6">
+                        <button id="step-3-prev" class="btn-action bg-gray-600 hover:bg-gray-700"><i class="fas fa-arrow-left mr-2"></i>VOLTAR</button>
+                        <button id="step-3-next" class="btn-action">PRÓXIMO</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Personalização Avançada - Giro -->
+                <div id="step-4" class="calculation-step card card-purple fade-in hidden">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-4 text-purple-300"><i class="fas fa-sliders-h mr-2"></i>Passo 4 de 5: Preferência de Giro</h2>
+                    <p class="text-gray-400 text-sm mb-4 text-center">Como você prefere a sensibilidade geral do giro?</p>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <button class="btn-option" data-type="personalization" data-q="giro" data-value="Mais Rápida">
                             <i class="fas fa-redo-alt text-lg sm:text-xl"></i> Mais Rápida<span class="text-xs text-gray-400">Virações rápidas</span>
@@ -513,10 +616,16 @@
                             <i class="fas fa-hand-pointer text-lg sm:text-xl"></i> Mais Lenta<span class="text-xs text-gray-400">Controle preciso</span>
                         </button>
                     </div>
+                    <div class="flex justify-between mt-6">
+                        <button id="step-4-prev" class="btn-action bg-gray-600 hover:bg-gray-700"><i class="fas fa-arrow-left mr-2"></i>VOLTAR</button>
+                        <button id="step-4-next" class="btn-action">PRÓXIMO</button>
+                    </div>
                 </div>
 
-                <div>
-                    <h3 class="text-lg font-semibold mb-2">2. Velocidade de "Arrasto" (Swipe na Tela)</h3>
+                <!-- Step 5: Personalização Avançada - Arrasto -->
+                <div id="step-5" class="calculation-step card card-purple fade-in hidden">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-4 text-purple-300"><i class="fas fa-sliders-h mr-2"></i>Passo 5 de 5: Velocidade de "Arrasto"</h2>
+                    <p class="text-gray-400 text-sm mb-4 text-center">Como você prefere a velocidade de "arrasto" (swipe) na tela?</p>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <button class="btn-option" data-type="personalization" data-q="arrasto" data-value="Muito Rápido">
                             <i class="fas fa-arrow-right text-lg sm:text-xl"></i> Muito Rápido<span class="text-xs text-gray-400">Grandes movimentos</span>
@@ -528,140 +637,131 @@
                             <i class="fas fa-arrows-alt-v text-lg sm:text-xl"></i> Lento<span class="text-xs text-gray-400">Pequenos ajustes</span>
                         </button>
                     </div>
+                    <div class="flex justify-between mt-6">
+                        <button id="step-5-prev" class="btn-action bg-gray-600 hover:bg-gray-700"><i class="fas fa-arrow-left mr-2"></i>VOLTAR</button>
+                        <button id="step-5-calculate" class="btn-action">CALCULAR SENSIBILIDADE</button>
+                    </div>
+                </div>
+
+                <!-- Results Card (remains the same, hidden by default) -->
+                <div id="results-card" class="card card-purple fade-in hidden">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-4 text-purple-300"><i class="fas fa-calculator mr-2"></i>Valores Calculados</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 sm:gap-4 text-md sm:text-lg">
+                        <div class="flex items-center">Geral: <span id="val-general" class="result-value"></span><div class="fine-tune-controls"><button class="fine-tune-btn" data-sens="general" data-change="-5"><span class="tooltip">Diminuir Geral</span>-</button><button class="fine-tune-btn" data-sens="general" data-change="+5"><span class="tooltip">Aumentar Geral</span>+</button><button class="copy-btn" data-sens-target="val-general"><i class="fas fa-copy"></i><span class="tooltip">Copiar Geral</span></button></div></div>
+                        <div class="flex items-center">Red Dot: <span id="val-redDot" class="result-value"></span><div class="fine-tune-controls"><button class="fine-tune-btn" data-sens="redDot" data-change="-5"><span class="tooltip">Diminuir Red Dot</span>-</button><button class="fine-tune-btn" data-sens="redDot" data-change="+5"><span class="tooltip">Aumentar Red Dot</span>+</button><button class="copy-btn" data-sens-target="val-redDot"><i class="fas fa-copy"></i><span class="tooltip">Copiar Red Dot</span></button></div></div>
+                        <div class="flex items-center">Mira 2x: <span id="val-aim2x" class="result-value"></span><div class="fine-tune-controls"><button class="fine-tune-btn" data-sens="aim2x" data-change="-5"><span class="tooltip">Diminuir Mira 2x</span>-</button><button class="fine-tune-btn" data-sens="aim2x" data-change="+5"><span class="tooltip">Aumentar Mira 2x</span>+</button><button class="copy-btn" data-sens-target="val-aim2x"><i class="fas fa-copy"></i><span class="tooltip">Copiar Mira 2x</span></button></div></div>
+                        <div class="flex items-center">Mira 4x: <span id="val-aim4x" class="result-value"></span><div class="fine-tune-controls"><button class="fine-tune-btn" data-sens="aim4x" data-change="-5"><span class="tooltip">Diminuir Mira 4x</span>-</button><button class="fine-tune-btn" data-sens="aim4x" data-change="+5"><span class="tooltip">Aumentar Mira 4x</span>+</button><button class="copy-btn" data-sens-target="val-aim4x"><i class="fas fa-copy"></i><span class="tooltip">Copiar Mira 4x</span></button></div></div>
+                        <div class="flex items-center">AWM: <span id="val-awm" class="result-value"></span><div class="fine-tune-controls"><button class="fine-tune-btn" data-sens="awm" data-change="-5"><span class="tooltip">Diminuir AWM</span>-</button><button class="fine-tune-btn" data-sens="awm" data-change="+5"><span class="tooltip">Aumentar AWM</span>+</button><button class="copy-btn" data-sens-target="val-awm"><i class="fas fa-copy"></i><span class="tooltip">Copiar AWM</span></button></div></div>
+                    </div>
+                    <button id="copy-all-sens-btn" class="btn-action w-full mt-6 mb-4">COPIAR TODAS AS SENSIBILIDADES</button>
+                    <button id="export-btn" class="btn-action w-full">EXPORTAR CONFIGURAÇÃO</button>
+                </div>
+                
+                <button id="clear-selections-btn" class="btn-action w-full mt-6 mb-8 bg-gray-600 hover:bg-gray-700">
+                    <i class="fas fa-eraser mr-2"></i> LIMPAR SELEÇÕES
+                </button>
+            </div>
+
+            <div class="card card-cyan fade-in">
+                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-cyan-300"><i class="fas fa-arrows-alt-h mr-2"></i>Conversor de DPI/Sensibilidade</h2>
+                <p class="text-gray-400 text-sm mb-4">Converta a sua sensibilidade para diferentes valores de DPI.</p>
+                
+                <div class="mb-4">
+                    <label for="current-dpi" class="block text-gray-300 text-sm font-bold mb-2">DPI Atual:</label>
+                    <input type="number" id="current-dpi" placeholder="Ex: 800" class="converter-input">
+                    <span id="current-dpi-error" class="error-message hidden"></span>
+                </div>
+                <div class="mb-4">
+                    <label for="current-sens" class="block text-gray-300 text-sm font-bold mb-2">Sensibilidade Atual:</label>
+                    <input type="number" id="current-sens" placeholder="Ex: 50" class="converter-input">
+                    <span id="current-sens-error" class="error-message hidden"></span>
+                </div>
+                <div class="mb-4">
+                    <label for="target-dpi" class="block text-gray-300 text-sm font-bold mb-2">DPI Alvo:</label>
+                    <input type="number" id="target-dpi" placeholder="Ex: 400" class="converter-input">
+                    <span id="target-dpi-error" class="error-message hidden"></span>
+                </div>
+
+                <button id="convert-sens-btn" class="btn-action w-full mt-2 mb-4">CONVERTER SENSIBILIDADE</button>
+                
+                <div class="mt-4 p-3 bg-gray-700 rounded-lg border border-cyan-500">
+                    <h3 class="text-lg font-bold text-cyan-200">Sensibilidade Convertida:</h3>
+                    <p id="converted-sens-display" class="text-2xl font-bold text-white mt-2">--</p>
+                    <button id="copy-converted-sens-btn" class="copy-btn mt-2 mx-auto"><i class="fas fa-copy"></i> Copiar<span class="tooltip">Copiar Sensibilidade Convertida</span></button>
                 </div>
             </div>
-            
-            <!-- Botão Calcular -->
-            <button id="calculate-btn" class="btn-action w-full mt-6 mb-8 fade-in">
-                CALCULAR SENSIBILIDADE
-            </button>
 
-            <!-- Resultados do Cálculo -->
-            <div id="results-card" class="card card-purple fade-in hidden">
-                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-purple-300"><i class="fas fa-calculator mr-2"></i>Valores Calculados</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 sm:gap-4 text-md sm:text-lg">
-                    <div class="flex items-center">Geral: <span id="val-general" class="result-value"></span><div class="fine-tune-controls"><button class="fine-tune-btn" data-sens="general" data-change="-5">-</button><button class="fine-tune-btn" data-sens="general" data-change="+5">+</button><button class="copy-btn" data-sens-target="val-general"><i class="fas fa-copy"></i></button></div></div>
-                    <div class="flex items-center">Red Dot: <span id="val-redDot" class="result-value"></span><div class="fine-tune-controls"><button class="fine-tune-btn" data-sens="redDot" data-change="-5">-</button><button class="fine-tune-btn" data-sens="redDot" data-change="+5">+</button><button class="copy-btn" data-sens-target="val-redDot"><i class="fas fa-copy"></i></button></div></div>
-                    <div class="flex items-center">Mira 2x: <span id="val-aim2x" class="result-value"></span><div class="fine-tune-controls"><button class="fine-tune-btn" data-sens="aim2x" data-change="-5">-</button><button class="fine-tune-btn" data-sens="aim2x" data-change="+5">+</button><button class="copy-btn" data-sens-target="val-aim2x"><i class="fas fa-copy"></i></button></div></div>
-                    <div class="flex items-center">Mira 4x: <span id="val-aim4x" class="result-value"></span><div class="fine-tune-controls"><button class="fine-tune-btn" data-sens="aim4x" data-change="-5">-</button><button class="fine-tune-btn" data-sens="aim4x" data-change="+5">+</button><button class="copy-btn" data-sens-target="val-aim4x"><i class="fas fa-copy"></i></button></div></div>
-                    <div class="flex items-center">AWM: <span id="val-awm" class="result-value"></span><div class="fine-tune-controls"><button class="fine-tune-btn" data-sens="awm" data-change="-5">-</button><button class="fine-tune-btn" data-sens="awm" data-change="+5">+</button><button class="copy-btn" data-sens-target="val-awm"><i class="fas fa-copy"></i></button></div></div>
+
+            <div id="otimizador-tab-content" class="tab-content hidden">
+                <div class="card card-blue fade-in">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-4 text-blue-300"><i class="fas fa-cogs mr-2"></i>Otimizador em Construção</h2>
+                    <p class="text-gray-400 text-center">Este módulo será lançado em breve com ferramentas avançadas de otimização!</p>
                 </div>
-                <button id="copy-all-sens-btn" class="btn-action w-full mt-6 mb-4">COPIAR TODAS AS SENSIBILIDADES</button>
-                <button id="export-btn" class="btn-action w-full">EXPORTAR CONFIGURAÇÃO</button>
-            </div>
-            
-            <!-- Botão Limpar Seleções -->
-            <button id="clear-selections-btn" class="btn-action w-full mt-6 mb-8 bg-gray-600 hover:bg-gray-700">
-                <i class="fas fa-eraser mr-2"></i> LIMPAR SELEÇÕES
-            </button>
-        </div>
-
-        <!-- NOVO MÓDULO: Conversor de DPI/Sensibilidade -->
-        <div class="card card-cyan fade-in">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-cyan-300"><i class="fas fa-arrows-alt-h mr-2"></i>Conversor de DPI/Sensibilidade</h2>
-            <p class="text-gray-400 text-sm mb-4">Converta a sua sensibilidade para diferentes valores de DPI.</p>
-            
-            <div class="mb-4">
-                <label for="current-dpi" class="block text-gray-300 text-sm font-bold mb-2">DPI Atual:</label>
-                <input type="number" id="current-dpi" placeholder="Ex: 800" class="converter-input">
-            </div>
-            <div class="mb-4">
-                <label for="current-sens" class="block text-gray-300 text-sm font-bold mb-2">Sensibilidade Atual:</label>
-                <input type="number" id="current-sens" placeholder="Ex: 50" class="converter-input">
-            </div>
-            <div class="mb-4">
-                <label for="target-dpi" class="block text-gray-300 text-sm font-bold mb-2">DPI Alvo:</label>
-                <input type="number" id="target-dpi" placeholder="Ex: 400" class="converter-input">
             </div>
 
-            <button id="convert-sens-btn" class="btn-action w-full mt-2 mb-4">CONVERTER SENSIBILIDADE</button>
-            
-            <div class="mt-4 p-3 bg-gray-700 rounded-lg border border-cyan-500">
-                <h3 class="text-lg font-bold text-cyan-200">Sensibilidade Convertida:</h3>
-                <p id="converted-sens-display" class="text-2xl font-bold text-white mt-2">--</p>
-                <button id="copy-converted-sens-btn" class="copy-btn mt-2 mx-auto"><i class="fas fa-copy"></i> Copiar</button>
+            <div id="performance-tab-content" class="tab-content hidden">
+                <div class="card card-green fade-in">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-4 text-green-300"><i class="fas fa-chart-line mr-2"></i>Performance em Análise</h2>
+                    <p class="text-gray-400 text-center">Acompanhe métricas de desempenho para elevar seu nível de jogo!</p>
+                </div>
             </div>
-        </div>
 
-
-        <!-- Conteúdo do Otimizador (Inicialmente oculto) -->
-        <div id="otimizador-tab-content" class="tab-content hidden">
-            <div class="card card-blue fade-in">
-                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-blue-300"><i class="fas fa-cogs mr-2"></i>Otimizador em Construção</h2>
-                <p class="text-gray-400 text-center">Este módulo será lançado em breve com ferramentas avançadas de otimização!</p>
+            <div id="booster-tab-content" class="tab-content hidden">
+                <div class="card card-red fade-in">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-4 text-red-300"><i class="fas fa-rocket mr-2"></i>Booster Ativado!</h2>
+                    <p class="text-gray-400 text-center">Prepara-se para o máximo de desempenho com nossos boosters exclusivos!</p>
+                </div>
             </div>
-        </div>
 
-        <!-- Conteúdo da Performance (Inicialmente oculto) -->
-        <div id="performance-tab-content" class="tab-content hidden">
             <div class="card card-green fade-in">
-                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-green-300"><i class="fas fa-chart-line mr-2"></i>Performance em Análise</h2>
-                <p class="text-gray-400 text-center">Acompanhe métricas de desempenho para elevar seu nível de jogo!</p>
+                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-green-300"><i class="fas fa-robot mr-2"></i>Dicas da IA ✨</h2>
+                <p id="ai-tip-display" class="text-gray-300 text-md text-center mb-4 min-h-[60px] flex items-center justify-center">
+                    Clique em "Obter Dica da IA" para um conselho estratégico personalizado!
+                </p>
+                <div id="ai-tip-loading" class="spinner hidden mx-auto mb-4"></div>
+                <button id="get-ai-tip-btn" class="btn-action w-full">Obter Dica da IA</button>
+                <button id="get-ai-tip-again-btn" class="btn-action w-full mt-4 bg-gray-600 hover:bg-gray-700 hidden">Gerar Novamente</button>
             </div>
-        </div>
 
-        <!-- Conteúdo do Booster (Inicialmente oculto) -->
-        <div id="booster-tab-content" class="tab-content hidden">
+            <div class="card card-yellow fade-in">
+                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-yellow-300"><i class="fas fa-dumbbell mr-2"></i>Treino Personalizado ✨</h2>
+                <p id="training-suggestion-display" class="text-gray-300 text-md text-center mb-4 min-h-[60px] flex items-center justify-center">
+                    Descubra exercícios para aprimorar o seu jogo!
+                </p>
+                <div id="training-loading" class="spinner hidden mx-auto mb-4"></div>
+                <button id="get-training-btn" class="btn-action w-full">Obter Sugestão de Treino</button>
+                <button id="get-training-again-btn" class="btn-action w-full mt-4 bg-gray-600 hover:bg-gray-700 hidden">Gerar Novamente</button>
+            </div>
+
+            <div class="card card-cyan fade-in">
+                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-cyan-300"><i class="fas fa-book-open mr-2"></i>Glossário Gamer ✨</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+                    <button class="glossary-term-btn" data-term="HUD">HUD<span class="tooltip">Heads-Up Display</span></button>
+                    <button class="glossary-term-btn" data-term="DPI">DPI<span class="tooltip">Dots Per Inch</span></button>
+                    <button class="glossary-term-btn" data-term="Recuo (Recoil)">Recuo (Recoil)<span class="tooltip">Movimento da arma</span></button>
+                    <button class="glossary-term-btn" data-term="Giro 360">Giro 360<span class="tooltip">Rotação completa</span></button>
+                    <button class="glossary-term-btn" data-term="Capa (Headshot)">Capa (Headshot)<span class="tooltip">Tiro na cabeça</span></button>
+                    <button class="glossary-term-btn" data-term="Rush Estratégico">Rush Estratégico<span class="tooltip">Ataque coordenado</span></button>
+                </div>
+                <p id="glossary-explanation-display" class="glossary-explanation text-gray-300 text-sm">
+                    Selecione um termo para ver a explicação.
+                </p>
+                <div id="glossary-loading" class="spinner hidden mx-auto mt-4"></div>
+            </div>
+
+
             <div class="card card-red fade-in">
-                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-red-300"><i class="fas fa-rocket mr-2"></i>Booster Ativado!</h2>
-                <p class="text-gray-400 text-center">Prepara-se para o máximo de desempenho com nossos boosters exclusivos!</p>
+                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-red-300"><i class="fas fa-history mr-2"></i>Últimas Configurações</h2>
+                <div id="history-container" class="space-y-4">
+                    <p id="no-history" class="text-gray-400 text-center text-sm sm:text-base">Nenhuma configuração no histórico.</p>
+                </div>
+                <button id="clear-history-btn" class="btn-action w-full mt-6 bg-gray-600 hover:bg-gray-700">
+                    <i class="fas fa-trash-alt mr-2"></i> LIMPAR HISTÓRICO
+                </button>
             </div>
-        </div>
-
-        <!-- Módulo de Dicas da IA -->
-        <div class="card card-green fade-in">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-green-300"><i class="fas fa-robot mr-2"></i>Dicas da IA ✨</h2>
-            <p id="ai-tip-display" class="text-gray-300 text-md text-center mb-4 min-h-[60px] flex items-center justify-center">
-                Clique em "Obter Dica da IA" para um conselho estratégico personalizado!
-            </p>
-            <div id="ai-tip-loading" class="spinner hidden mx-auto mb-4"></div>
-            <button id="get-ai-tip-btn" class="btn-action w-full">Obter Dica da IA</button>
-        </div>
-
-        <!-- Novo Módulo: Sugestão de Treino Personalizado -->
-        <div class="card card-yellow fade-in">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-yellow-300"><i class="fas fa-dumbbell mr-2"></i>Treino Personalizado ✨</h2>
-            <p id="training-suggestion-display" class="text-gray-300 text-md text-center mb-4 min-h-[60px] flex items-center justify-center">
-                Descubra exercícios para aprimorar o seu jogo!
-            </p>
-            <div id="training-loading" class="spinner hidden mx-auto mb-4"></div>
-            <button id="get-training-btn" class="btn-action w-full">Obter Sugestão de Treino</button>
-        </div>
-
-        <!-- Novo Módulo: Glossário Gamer -->
-        <div class="card card-cyan fade-in">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-cyan-300"><i class="fas fa-book-open mr-2"></i>Glossário Gamer ✨</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
-                <button class="glossary-term-btn" data-term="HUD">HUD</button>
-                <button class="glossary-term-btn" data-term="DPI">DPI</button>
-                <button class="glossary-term-btn" data-term="Recuo (Recoil)">Recuo (Recoil)</button>
-                <button class="glossary-term-btn" data-term="Giro 360">Giro 360</button>
-                <button class="glossary-term-btn" data-term="Capa (Headshot)">Capa (Headshot)</button>
-                <button class="glossary-term-btn" data-term="Rush Estratégico">Rush Estratégico</button>
-            </div>
-            <p id="glossary-explanation-display" class="glossary-explanation text-gray-300 text-sm">
-                Selecione um termo para ver a explicação.
-            </p>
-            <div id="glossary-loading" class="spinner hidden mx-auto mt-4"></div>
-        </div>
-
-
-        <!-- Histórico de Configurações -->
-        <div class="card card-red fade-in">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-red-300"><i class="fas fa-history mr-2"></i>Últimas Configurações</h2>
-            <div id="history-container" class="space-y-4">
-                <!-- Configurações serão inseridas aqui via JS -->
-                <p id="no-history" class="text-gray-400 text-center text-sm sm:text-base">Nenhuma configuração no histórico.</p>
-            </div>
-            <!-- Botão Limpar Histórico -->
-            <button id="clear-history-btn" class="btn-action w-full mt-6 bg-gray-600 hover:bg-gray-700">
-                <i class="fas fa-trash-alt mr-2"></i> LIMPAR HISTÓRICO
-            </button>
-        </div>
-
+        </main>
     </div>
 
-    <!-- Modal Personalizado -->
     <div id="custom-modal" class="modal hidden">
         <div class="modal-content">
             <span class="close-button" id="close-modal">&times;</span>
@@ -670,91 +770,99 @@
         </div>
     </div>
 
-    <!-- Mensagem de Cópia para Área de Transferência -->
+    <div id="about-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button" id="close-about-modal">&times;</span>
+            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-purple-300"><i class="fas fa-info-circle mr-2"></i>Sobre o Soberanos Tools</h2>
+            <p class="modal-message text-left text-sm">
+                O Soberanos Tools é o seu centro de comando gaming avançado! Nosso objetivo é ajudar jogadores de Free Fire a otimizar suas configurações, melhorar seu desempenho e dominar o campo de batalha.
+            </p>
+            <p class="modal-message text-left text-sm">
+                Utilizamos inteligência artificial para calcular sensibilidades personalizadas e oferecer dicas estratégicas e planos de treino exclusivos para o seu perfil de jogador. Mantenha-se atualizado para novas ferramentas de otimização e performance!
+            </p>
+            <p class="text-xs text-gray-500 mt-4">Versão: 1.0.1</p>
+            <button class="modal-btn mt-4" id="about-ok-btn">ENTENDI</button>
+        </div>
+    </div>
+
     <div id="copy-success-message" class="copy-message hidden">
         Valor copiado!
     </div>
 
-    <!-- Loading overlay para cálculo de sensibilidade -->
-    <div id="calculate-loading-overlay" class="hidden" style="display: none;">
+    <div id="calculate-loading-overlay" class="hidden">
         <div class="spinner"></div>
         <p class="mt-4">Gerando sensibilidade com IA...</p>
         <p class="text-sm text-gray-400">Isso pode levar alguns segundos.</p>
     </div>
 
-    <!-- Bottom Navigation (Visual placeholder) -->
     <footer class="bottom-nav fixed bottom-0 w-full flex justify-around items-center py-3 z-50">
         <button class="bottom-nav-icon"><i class="fas fa-download"></i></button>
         <button class="bottom-nav-icon"><i class="fas fa-cog"></i></button>
-        <button class="bottom-nav-icon text-purple-400 text-2xl sm:text-3xl"><i class="fas fa-star"></i></button> <!-- Placeholder 'A' -->
+        <button class="bottom-nav-icon text-purple-400 text-2xl sm:text-3xl"><i class="fas fa-star"></i></button>
         <button class="bottom-nav-icon relative">
             <i class="fas fa-bell"></i>
             <span class="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">94</span>
         </button>
-        <button class="bottom-nav-icon"><i class="fas fa-chevron-right"></i></button>
+        <button id="about-btn" class="bottom-nav-icon"><i class="fas fa-question-circle"></i></button>
     </footer>
 
-    <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, query, onSnapshot, addDoc, doc, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global Firebase instances
-        let app;
-        let db;
-        let auth;
-        let currentUserId = null;
-        let isAuthReady = false; // Flag para garantir que a autenticação esteja pronta antes de operar com Firestore
-
-        // Variáveis globais para o aplicativo principal (mantidas aqui para o escopo)
-        let deviceLevel = '';
-        let role = '';
-        let aimStyle = '';
-        let personalizationGiro = '';
-        let personalizationArrasto = '';
-        let lastCalculatedConfig = null;
-        let detectedDeviceName = 'Dispositivo Não Identificado';
+        // --- Variáveis Globais (Encapsuladas para Melhor Organização) ---
+        // Decisão de Design: Manter variáveis de estado em um objeto para fácil gerenciamento e clareza.
+        const appState = {
+            app: null,
+            db: null,
+            auth: null,
+            currentUserId: null,
+            isAuthReady: false, // Flag para garantir que a autenticação esteja pronta antes de operar com Firestore
+            currentStep: 1, // Controla o passo atual da conversação de sensibilidade
+            deviceLevel: '',
+            role: '',
+            aimStyle: '',
+            personalizationGiro: '',
+            personalizationArrasto: '',
+            lastCalculatedConfig: null, // Armazena a última configuração calculada (incluindo ajustes)
+            detectedDeviceName: 'Dispositivo Não Identificado',
+        };
 
         // --- CONSTANTES DO SISTEMA ---
         const SENSITIVITY_MIN_VALUE = 10;
         const SENSITIVITY_MAX_VALUE = 200;
         const HISTORY_MAX_ITEMS = 5;
         const USER_ID_DISPLAY_ELEMENT = document.getElementById('user-id-display');
+        const COPY_USER_ID_BTN = document.getElementById('copy-user-id-btn'); 
         const CALCULATE_LOADING_OVERLAY = document.getElementById('calculate-loading-overlay');
-
         const DEVICE_LEVELS = {
             FRACO: 'Fraco',
             MEDIO: 'Médio',
             FORTE: 'Forte'
         };
-
         const ROLES = {
             RUSH: 'Rush',
             SUPORTE: 'Suporte',
             GRANADEIRO: 'Granadeiro',
             ATIRADOR: 'Atirador'
         };
-
         const AIM_STYLES = {
             RAPIDA: 'Rápida',
             PRECISA: 'Precisa'
         };
-
         const PERSONALIZATION_GIRO = {
             MAIS_RAPIDA: 'Mais Rápida',
             EQUILIBRADA: 'Equilibrada',
             MAIS_LENTA: 'Mais Lenta'
         };
-
         const PERSONALIZATION_ARRASTO = {
             MUITO_RAPIDO: 'Muito Rápido',
             NORMAL: 'Normal',
             LENTO: 'Lento'
         };
-
         // GOOGLE GEMINI API KEY (preenchida em tempo de execução pelo ambiente Canvas)
-        const GEMINI_API_KEY = "AIzaSyAu26DCY2kvPQxyVKG3s2TceuTkyTKjGpg"; 
+        const GEMINI_API_KEY = ""; 
 
         // === ELEMENTOS DOM === (Referenciados do escopo global acima)
         const deviceDetectionInfo = document.getElementById('detected-device-info');
@@ -762,7 +870,7 @@
         const roleButtons = document.querySelectorAll('[data-type="role"]');
         const aimStyleButtons = document.querySelectorAll('[data-type="aimStyle"]');
         const personalizationButtons = document.querySelectorAll('[data-type="personalization"]');
-        const calculateBtn = document.getElementById('calculate-btn');
+        
         const resultsCard = document.getElementById('results-card');
         const exportBtn = document.getElementById('export-btn');
         const copyAllSensBtn = document.getElementById('copy-all-sens-btn');
@@ -777,15 +885,22 @@
         const modalMessage = document.getElementById('modal-message');
         const modalOkBtn = document.getElementById('modal-ok-btn');
 
+        const aboutModal = document.getElementById('about-modal'); // NOVO: Modal Sobre
+        const closeAboutModalBtn = document.getElementById('close-about-modal'); // NOVO: Botão fechar Sobre
+        const aboutOkBtn = document.getElementById('about-ok-btn'); // NOVO: Botão OK do Sobre
+        const aboutBtn = document.getElementById('about-btn'); // NOVO: Botão na footer
+
         // AI Tips Elements (Dicas da IA)
         const aiTipDisplay = document.getElementById('ai-tip-display');
         const aiTipLoading = document.getElementById('ai-tip-loading');
         const getAiTipBtn = document.getElementById('get-ai-tip-btn');
+        const getAiTipAgainBtn = document.getElementById('get-ai-tip-again-btn'); // NOVO: Botão Gerar Novamente Dica
 
         // Training Suggestion Elements (Sugestão de Treino)
         const trainingSuggestionDisplay = document.getElementById('training-suggestion-display');
         const trainingLoading = document.getElementById('training-loading');
         const getTrainingBtn = document.getElementById('get-training-btn');
+        const getTrainingAgainBtn = document.getElementById('get-training-again-btn'); // NOVO: Botão Gerar Novamente Treino
 
         // Glossary Elements (Glossário Gamer)
         const glossaryTermButtons = document.querySelectorAll('.glossary-term-btn');
@@ -794,28 +909,42 @@
 
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabContents = document.querySelectorAll('.tab-content');
-
         // Mensagem de cópia
         const copySuccessMessage = document.getElementById('copy-success-message');
-
         // Elementos do monitor de FPS e Ping
         const fpsDisplay = document.getElementById('fps-display');
+        const fpsIndicatorBox = document.querySelector('.fps-indicator-box'); 
         const pingDisplay = document.getElementById('ping-display');
 
         // Elementos do Conversor de DPI/Sensibilidade (NOVO)
         const currentDPIInput = document.getElementById('current-dpi');
+        const currentDPIError = document.getElementById('current-dpi-error');
         const currentSensInput = document.getElementById('current-sens');
+        const currentSensError = document.getElementById('current-sens-error');
         const targetDPIInput = document.getElementById('target-dpi');
+        const targetDPIError = document.getElementById('target-dpi-error');
         const convertSensBtn = document.getElementById('convert-sens-btn');
         const convertedSensDisplay = document.getElementById('converted-sens-display');
         const copyConvertedSensBtn = document.getElementById('copy-converted-sens-btn');
+
+        // Elementos para os botões de navegação dos passos da sensibilidade
+        const sensSteps = document.querySelectorAll('.calculation-step');
+        const step1NextBtn = document.getElementById('step-1-next');
+        const step2PrevBtn = document.getElementById('step-2-prev');
+        const step2NextBtn = document.getElementById('step-2-next');
+        const step3PrevBtn = document.getElementById('step-3-prev');
+        const step3NextBtn = document.getElementById('step-3-next');
+        const step4PrevBtn = document.getElementById('step-4-prev');
+        const step4NextBtn = document.getElementById('step-4-next');
+        const step5PrevBtn = document.getElementById('step-5-prev');
+        const step5CalculateBtn = document.getElementById('step-5-calculate');
 
 
         // Banco de dados de dispositivos para detecção mais inteligente
         // Prioriza detecção mobile
         const deviceDatabase = [
             // Mobile Specific (detecção mais robusta)
-            { uaKeyword: "iPhone", level: DEVICE_LEVELS.MEDIO, name: "iPhone" }, // Genérico para iPhones, pode ser mais específico por modelo
+            { uaKeyword: "iPhone", level: DEVICE_LEVELS.MEDIO, name: "iPhone" }, 
             { uaKeyword: "iPad", level: DEVICE_LEVELS.FORTE, name: "iPad" },
             { uaKeyword: "Android", level: DEVICE_LEVELS.MEDIO, name: "Android Genérico" },
             { uaKeyword: "SM-G9", level: DEVICE_LEVELS.MEDIO, name: "Samsung Galaxy S (Antigo)" },
@@ -825,10 +954,10 @@
             { uaKeyword: "Mi ", level: DEVICE_LEVELS.MEDIO, name: "Xiaomi Mi" },
             { uaKeyword: "Redmi", level: DEVICE_LEVELS.FRACO, name: "Xiaomi Redmi" },
             { uaKeyword: "Moto G", level: DEVICE_LEVELS.FRACO, name: "Motorola Moto G" },
-            { uaKeyword: "Galaxy", level: DEVICE_LEVELS.MEDIO, name: "Samsung Galaxy" }, // Mais um genérico Android
+            { uaKeyword: "Galaxy", level: DEVICE_LEVELS.MEDIO, name: "Samsung Galaxy" }, 
             { uaKeyword: "Xperia", level: DEVICE_LEVELS.MEDIO, name: "Sony Xperia" },
             { uaKeyword: "Lumia", level: DEVICE_LEVELS.MEDIO, name: "Microsoft Lumia" },
-            { uaKeyword: "Mobile", level: DEVICE_LEVELS.MEDIO, name: "Dispositivo Móvel Genérico" }, // Catch-all para mobile
+            { uaKeyword: "Mobile", level: DEVICE_LEVELS.MEDIO, name: "Dispositivo Móvel Genérico" }, 
             { uaKeyword: "Tablet", level: DEVICE_LEVELS.MEDIO, name: "Tablet Genérico" },
             // Desktop fallback (última prioridade)
             { uaKeyword: "Windows NT", level: DEVICE_LEVELS.FORTE, name: "PC (Windows)" },
@@ -854,6 +983,20 @@
         }
 
         /**
+         * Exibe o modal "Sobre o App".
+         */
+        function showAboutModal() {
+            aboutModal.style.display = 'flex';
+        }
+
+        /**
+         * Esconde o modal "Sobre o App".
+         */
+        function hideAboutModal() {
+            aboutModal.style.display = 'none';
+        }
+
+        /**
          * Exibe uma pequena mensagem de sucesso na parte inferior da tela.
          * @param {string} message - A mensagem a ser exibida.
          * @param {number} duration - Duração em milissegundos para a mensagem ficar visível.
@@ -875,18 +1018,14 @@
         function detectDevice() {
             const userAgent = navigator.userAgent;
             const platform = navigator.platform;
-            const maxTouchPoints = navigator.maxTouchPoints || 0; // Para detectar se é um dispositivo touch
+            const maxTouchPoints = navigator.maxTouchPoints || 0; 
 
             let detected = false;
-            let finalDeviceLevel = DEVICE_LEVELS.MEDIO; // Default
+            let finalDeviceLevel = DEVICE_LEVELS.MEDIO; 
             let finalDeviceName = 'Dispositivo Desconhecido';
-
-            // 1. Priorizar detecção de dispositivos móveis/touch
-            // Verifica se é um dispositivo "mobile" pelo User Agent ou se tem touch screen
+            
             if (maxTouchPoints > 0 || /Mobi|Android|iPhone|iPad|iPod|Windows Phone|BlackBerry/i.test(userAgent)) {
-                // Tentativa de detecção mais específica para Android e iOS
                 for (const device of deviceDatabase) {
-                    // Ignora padrões genéricos de desktop se já sabemos que é mobile
                     if (device.uaKeyword.includes('Windows') || device.uaKeyword.includes('Macintosh') || device.uaKeyword.includes('Linux')) {
                         continue;
                     }
@@ -897,7 +1036,6 @@
                         break;
                     }
                 }
-                // Se não encontrou um mobile específico, mas é um dispositivo touch/mobile genérico
                 if (!detected) {
                     if (/iPhone|iPad|iPod/i.test(userAgent)) {
                         finalDeviceLevel = DEVICE_LEVELS.MEDIO;
@@ -909,11 +1047,10 @@
                         finalDeviceLevel = DEVICE_LEVELS.MEDIO;
                         finalDeviceName = 'Dispositivo Touchscreen Genérico';
                     }
-                    detected = true; // Marca como detectado como mobile genérico
+                    detected = true; 
                 }
             }
 
-            // 2. Fallback para detecção de desktop se ainda não detectado como mobile/touch
             if (!detected) {
                 for (const device of deviceDatabase) {
                     if (userAgent.includes(device.uaKeyword)) {
@@ -925,10 +1062,9 @@
                 }
             }
 
-            // 3. Último fallback genérico se nada foi detectado
             if (!detected) {
                 if (/Windows|Mac|Linux/.test(platform)) {
-                    finalDeviceLevel = DEVICE_LEVELS.FORTE; // Assumimos que PC é forte
+                    finalDeviceLevel = DEVICE_LEVELS.FORTE; 
                     finalDeviceName = 'PC (SO Desconhecido)';
                 } else {
                     finalDeviceLevel = DEVICE_LEVELS.MEDIO;
@@ -936,17 +1072,13 @@
                 }
             }
             
-            deviceLevel = finalDeviceLevel; // Atribui ao global
-            detectedDeviceName = finalDeviceName; // Atribui ao global
+            if (!appState.deviceLevel) {
+                 appState.deviceLevel = finalDeviceLevel; 
+            }
+           
+            appState.detectedDeviceName = finalDeviceName; 
 
-            deviceDetectionInfo.textContent = `📱 Aparelho detectado: ${detectedDeviceName}`;
-            levelButtons.forEach(button => {
-                if (button.dataset.value === deviceLevel) {
-                    button.classList.add('active');
-                } else {
-                    button.classList.remove('active');
-                }
-            });
+            deviceDetectionInfo.textContent = `📱 Aparelho detectado: ${appState.detectedDeviceName}`;
         }
 
         /**
@@ -960,46 +1092,174 @@
             let buttons;
             if (type === 'personalization' && questionType) {
                 buttons = document.querySelectorAll(`[data-type="${type}"][data-q="${questionType}"]`);
-                if (questionType === 'giro') personalizationGiro = value;
-                else if (questionType === 'arrasto') personalizationArrasto = value;
+                if (questionType === 'giro') appState.personalizationGiro = value;
+                else if (questionType === 'arrasto') appState.personalizationArrasto = value;
             } else {
                 buttons = document.querySelectorAll(`[data-type="${type}"]`);
-                if (type === 'deviceLevel') deviceLevel = value;
-                else if (type === 'role') role = value;
-                else if (type === 'aimStyle') aimStyle = value;
+                if (type === 'deviceLevel') appState.deviceLevel = value;
+                else if (type === 'role') appState.role = value;
+                else if (type === 'aimStyle') appState.aimStyle = value;
             }
             
             buttons.forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
+
+            // Persist state immediately after selection
+            saveAppStateToLocalStorage();
         }
 
         /**
          * Limpa todas as seleções feitas pelo utilizador e reseta a interface.
+         * Resets the entire conversational flow.
          */
         function clearSelections() {
             // Limpa variáveis de estado
-            deviceLevel = '';
-            role = '';
-            aimStyle = '';
-            personalizationGiro = '';
-            personalizationArrasto = '';
-            lastCalculatedConfig = null;
-
+            appState.deviceLevel = '';
+            appState.role = '';
+            appState.aimStyle = '';
+            appState.personalizationGiro = '';
+            appState.personalizationArrasto = '';
+            appState.lastCalculatedConfig = null;
+            appState.currentStep = 1; 
             // Remove a classe 'active' de todos os botões de opção
             document.querySelectorAll('.btn-option').forEach(btn => {
                 btn.classList.remove('active');
             });
-
             // Oculta o card de resultados de sensibilidade
             resultsCard.classList.add('hidden');
-
             // Redetecta o dispositivo para preencher o nível do telemóvel automaticamente de novo
-            detectDevice();
+            detectDevice(); 
+            showStep(appState.currentStep); 
 
+            // Persist state reset
+            saveAppStateToLocalStorage();
             // Mensagem de feedback
-            showModal('Todas as seleções foram limpas.');
+            showModal('Todas as seleções foram limpas e o cálculo reiniciado.');
         }
 
+        // Funções para controle do fluxo conversacional de sensibilidade
+        /**
+         * Hides all sensitivity calculation steps and shows the specified one.
+         * @param {number} stepNumber - The step number to show.
+         */
+        function showStep(stepNumber) {
+            sensSteps.forEach(step => step.classList.add('hidden'));
+            document.getElementById(`step-${stepNumber}`).classList.remove('hidden');
+            // Scroll to the top of the current step for better UX
+            document.getElementById(`step-${stepNumber}`).scrollIntoView({ behavior: 'smooth', block: 'start' });
+            appState.currentStep = stepNumber;
+            saveAppStateToLocalStorage(); 
+            resultsCard.classList.add('hidden'); 
+        }
+
+        /**
+         * Validates the current step's selection and moves to the next step.
+         */
+        function goToNextStep() {
+            let isValid = true;
+            let errorMessage = '';
+
+            switch (appState.currentStep) {
+                case 1: // Device Level
+                    if (!appState.deviceLevel) {
+                        isValid = false;
+                        errorMessage = 'Por favor, selecione o nível do seu telemóvel.';
+                    }
+                    break;
+                case 2: // Role
+                    if (!appState.role) {
+                        isValid = false;
+                        errorMessage = 'Por favor, selecione a sua função no time.';
+                    }
+                    break;
+                case 3: // Aim Style
+                    if (!appState.aimStyle) {
+                        isValid = false;
+                        errorMessage = 'Por favor, selecione o seu estilo de mira.';
+                    }
+                    break;
+                case 4: // Personalization Giro
+                    if (!appState.personalizationGiro) {
+                        isValid = false;
+                        errorMessage = 'Por favor, selecione a sua preferência de giro.';
+                    }
+                    break;
+                case 5: // This is the final step before calculation, no "next" step here.
+                    break;
+            }
+
+            if (!isValid) {
+                showModal(errorMessage);
+                return;
+            }
+
+            if (appState.currentStep < sensSteps.length) {
+                showStep(appState.currentStep + 1);
+            }
+        }
+
+        /**
+         * Moves to the previous step in the conversational flow.
+         */
+        function goToPrevStep() {
+            if (appState.currentStep > 1) {
+                showStep(appState.currentStep - 1);
+            }
+        }
+
+        /**
+         * Initializes the conversational sensitivity flow.
+         * Attempts to resume from a saved state.
+         */
+        function initConversationalSensitivity() {
+            loadAppStateFromLocalStorage(); 
+
+            // If a previous state exists, navigate to its step. Otherwise, start at step 1.
+            if (appState.currentStep > 1 && (appState.deviceLevel || appState.role || appState.aimStyle || appState.personalizationGiro || appState.personalizationArrasto)) {
+                showStep(appState.currentStep);
+                // Re-apply active classes based on loaded state
+                document.querySelectorAll('.btn-option').forEach(btn => {
+                    const type = btn.dataset.type;
+                    const value = btn.dataset.value;
+                    const q = btn.dataset.q;
+
+                    let shouldBeActive = false;
+                    if (type === 'deviceLevel' && appState.deviceLevel === value) shouldBeActive = true;
+                    else if (type === 'role' && appState.role === value) shouldBeActive = true;
+                    else if (type === 'aimStyle' && appState.aimStyle === value) shouldBeActive = true;
+                    else if (type === 'personalization') {
+                        if (q === 'giro' && appState.personalizationGiro === value) shouldBeActive = true;
+                        else if (q === 'arrasto' && appState.personalizationArrasto === value) shouldBeActive = true;
+                    }
+
+                    if (shouldBeActive) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                // If there's a last calculated config and we are on the sensitivity tab, display it
+                if (appState.lastCalculatedConfig) {
+                    displayResults(appState.lastCalculatedConfig.adjustedValues);
+                }
+            } else {
+                appState.currentStep = 1; 
+                showStep(1);
+            }
+
+            // Ensure device is detected and default level set for step 1 initially
+            detectDevice(); 
+            // If deviceLevel was automatically detected and no user selection, activate the button for Step 1
+            if (appState.currentStep === 1 && appState.deviceLevel) {
+                 levelButtons.forEach(button => {
+                    if (button.dataset.value === appState.deviceLevel) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
+                    }
+                });
+            }
+        }
 
         // === FUNÇÕES DE CÁLCULO E EXIBIÇÃO DE SENSIBILIDADE (AGORA COM IA) ===
         /**
@@ -1017,23 +1277,18 @@
          * Calculates sensitivity using the Gemini AI, based on user selections.
          */
         async function calculateSensitivity() {
-            if (!deviceLevel || !role || !aimStyle || !personalizationGiro || !personalizationArrasto) {
-                showModal('Por favor, selecione todas as opções: Nível do Telemóvel, Função no Time, Estilo de Mira e Personalização Avançada.');
-                return;
-            }
-
             // Show loading overlay
-            CALCULATE_LOADING_OVERLAY.classList.remove('hidden');
-            calculateBtn.disabled = true; // Disable button during calculation
-            calculateBtn.textContent = 'CALCULANDO...'; // Change button text
+            CALCULATE_LOADING_OVERLAY.classList.remove('hidden'); 
+            step5CalculateBtn.disabled = true; 
+            step5CalculateBtn.textContent = 'CALCULANDO...'; 
 
             const prompt = `Como um especialista em sensibilidade de jogos, gere valores ideais de sensibilidade para Free Fire.
 Considere o seguinte perfil de jogador:
-- Nível do Aparelho: ${deviceLevel}
-- Função no Time: ${role}
-- Estilo de Mira: ${aimStyle}
-- Preferência de Giro (Sensibilidade Geral): ${personalizationGiro}
-- Velocidade de Arrasto (Swipe na Tela): ${personalizationArrasto}
+- Nível do Aparelho: ${appState.deviceLevel}
+- Função no Time: ${appState.role}
+- Estilo de Mira: ${appState.aimStyle}
+- Preferência de Giro (Sensibilidade Geral): ${appState.personalizationGiro}
+- Velocidade de Arrasto (Swipe na Tela): ${appState.personalizationArrasto}
 
 Forneça os valores de sensibilidade (Geral, Red Dot, Mira 2x, Mira 4x, AWM) em formato JSON.
 Os valores devem ser números inteiros entre ${SENSITIVITY_MIN_VALUE} e ${SENSITIVITY_MAX_VALUE}.
@@ -1060,7 +1315,6 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
                     }
                 }
             };
-
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
             try {
@@ -1096,27 +1350,33 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
                     for (const key in generatedValues) {
                         if (typeof generatedValues[key] !== 'number' || isNaN(generatedValues[key])) {
                             console.warn(`Valor inválido da IA para ${key}:`, generatedValues[key]);
-                            generatedValues[key] = Math.round(SENSITIVITY_MIN_VALUE + (SENSITIVITY_MAX_VALUE - SENSITIVITY_MIN_VALUE) / 2); // Fallback to a mid-range value
+                            generatedValues[key] = Math.round(SENSITIVITY_MIN_VALUE + (SENSITIVITY_MAX_VALUE - SENSITIVITY_MIN_VALUE) / 2); 
                         }
                         generatedValues[key] = clamp(generatedValues[key], SENSITIVITY_MIN_VALUE, SENSITIVITY_MAX_VALUE);
                     }
                     
-                    lastCalculatedConfig = {
-                        device: detectedDeviceName,
-                        deviceLevel: deviceLevel,
-                        role: role,
-                        aimStyle: aimStyle,
+                    appState.lastCalculatedConfig = {
+                        device: appState.detectedDeviceName,
+                        deviceLevel: appState.deviceLevel,
+                        role: appState.role,
+                        aimStyle: appState.aimStyle,
                         personalization: {
-                            giro: personalizationGiro,
-                            arrasto: personalizationArrasto
+                            giro: appState.personalizationGiro,
+                            arrasto: appState.personalizationArrasto
                         },
-                        values: { ...generatedValues }, // Valores gerados pela IA
-                        adjustedValues: { ...generatedValues }, // Valores ajustados começam com os da IA
+                        values: { ...generatedValues }, 
+                        adjustedValues: { ...generatedValues }, 
                         timestamp: new Date().toLocaleString('pt-BR')
                     };
+                    displayResults(appState.lastCalculatedConfig.adjustedValues);
+                    saveConfiguration(appState.lastCalculatedConfig);
+                    saveAppStateToLocalStorage(); // Save current config to local storage
 
-                    displayResults(lastCalculatedConfig.adjustedValues);
-                    saveConfiguration(lastCalculatedConfig);
+                    // Oculta os passos da conversação e mostra o card de resultados
+                    sensSteps.forEach(step => step.classList.add('hidden'));
+                    resultsCard.classList.remove('hidden');
+                    resultsCard.classList.add('fade-in');
+                    resultsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
                 } else {
                     console.warn('Resposta da API Gemini sem conteúdo esperado (Cálculo Sensibilidade):', result);
@@ -1127,8 +1387,8 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
                 showModal('Erro de conexão ao gerar sensibilidade. Verifique a internet ou tente mais tarde. 😞');
             } finally {
                 CALCULATE_LOADING_OVERLAY.classList.add('hidden');
-                calculateBtn.disabled = false;
-                calculateBtn.textContent = 'CALCULAR SENSIBILIDADE'; // Reset button text
+                step5CalculateBtn.disabled = false;
+                step5CalculateBtn.textContent = 'CALCULAR SENSIBILIDADE'; 
             }
         }
 
@@ -1138,13 +1398,14 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
          * @param {number} change - The change value (+/- 5).
          */
         function adjustSensitivity(sensKey, change) {
-            if (!lastCalculatedConfig) {
+            if (!appState.lastCalculatedConfig) {
                 showModal('Primeiro, calcule uma sensibilidade para poder ajustá-la.');
                 return;
             }
-            lastCalculatedConfig.adjustedValues[sensKey] = clamp(lastCalculatedConfig.adjustedValues[sensKey] + change, SENSITIVITY_MIN_VALUE, SENSITIVITY_MAX_VALUE);
-            displayResults(lastCalculatedConfig.adjustedValues);
-            saveConfiguration(lastCalculatedConfig);
+            appState.lastCalculatedConfig.adjustedValues[sensKey] = clamp(appState.lastCalculatedConfig.adjustedValues[sensKey] + change, SENSITIVITY_MIN_VALUE, SENSITIVITY_MAX_VALUE);
+            displayResults(appState.lastCalculatedConfig.adjustedValues);
+            saveConfiguration(appState.lastCalculatedConfig);
+            saveAppStateToLocalStorage(); // Save adjusted config to local storage
         }
 
         /**
@@ -1189,7 +1450,6 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
          */
         function displayResults(valuesToDisplay) {
             if (!valuesToDisplay) return;
-
             updateSensitivityDisplayElement('val-general', valuesToDisplay.general);
             updateSensitivityDisplayElement('val-redDot', valuesToDisplay.redDot);
             updateSensitivityDisplayElement('val-aim2x', valuesToDisplay.aim2x);
@@ -1204,13 +1464,13 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
         /**
          * Copia todos os valores de sensibilidade calculados para a área de transferência.
          */
-        function copyAllSensitivities() {
-            if (!lastCalculatedConfig || !lastCalculatedConfig.adjustedValues) {
+        async function copyAllSensitivities() {
+            if (!appState.lastCalculatedConfig || !appState.lastCalculatedConfig.adjustedValues) {
                 showModal('Nenhuma sensibilidade calculada para copiar.');
                 return;
             }
 
-            const sensValues = lastCalculatedConfig.adjustedValues;
+            const sensValues = appState.lastCalculatedConfig.adjustedValues;
             let textToCopy = `Sensibilidade:\n`;
             textToCopy += `Geral: ${sensValues.general}\n`;
             textToCopy += `Red Dot: ${sensValues.redDot}\n`;
@@ -1218,18 +1478,14 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
             textToCopy += `Mira 4x: ${sensValues.aim4x}\n`;
             textToCopy += `AWM: ${sensValues.awm}`;
 
-            const textarea = document.createElement('textarea');
-            textarea.value = textToCopy;
-            document.body.appendChild(textarea);
-            textarea.select();
+            // Usando a API moderna navigator.clipboard
             try {
-                document.execCommand('copy');
+                await navigator.clipboard.writeText(textToCopy);
                 showCopySuccessMessage('Todas as sensibilidades copiadas!');
             } catch (err) {
                 console.error('Falha ao copiar todas as sensibilidades:', err);
                 showModal('Não foi possível copiar todas as sensibilidades. Por favor, tente copiar individualmente.');
             }
-            document.body.removeChild(textarea);
         }
 
 
@@ -1239,7 +1495,8 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
          * @param {object} config - O objeto de configuração a ser salvo.
          */
         async function saveConfiguration(config) {
-            if (!isAuthReady || !currentUserId) {
+            // Decisão de Desenho: Garantir que a autenticação esteja pronta antes de tentar operações de banco de dados.
+            if (!appState.isAuthReady || !appState.currentUserId) {
                 console.warn('Autenticação não está pronta. Não é possível salvar a configuração no Firestore.');
                 return;
             }
@@ -1257,12 +1514,11 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
                     aimStyle: config.aimStyle,
                     personalizationGiro: config.personalization.giro,
                     personalizationArrasto: config.personalization.arrasto,
-                    timestamp: new Date(), // Firestore usará o timestamp do servidor
-                    userId: currentUserId
+                    timestamp: new Date(), 
+                    userId: appState.currentUserId
                 };
-                
                 // Salvar na coleção privada do utilizador
-                await addDoc(collection(db, `artifacts/${__app_id}/users/${currentUserId}/configs`), configToSave);
+                await addDoc(collection(appState.db, `artifacts/${__app_id}/users/${appState.currentUserId}/configs`), configToSave);
                 console.log("Configuração salva no Firestore!");
 
             } catch (error) {
@@ -1275,13 +1531,13 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
          * Carrega e exibe configurações do Firestore em tempo real.
          */
         function loadConfigurationsFromFirestore() {
-            if (!isAuthReady || !currentUserId) {
+            // Decisão de Desenho: Evitar chamadas de DB se o usuário não estiver autenticado.
+            if (!appState.isAuthReady || !appState.currentUserId) {
                 console.warn('Autenticação não está pronta. Não é possível carregar configurações do Firestore.');
                 return;
             }
 
-            const configsColRef = collection(db, `artifacts/${__app_id}/users/${currentUserId}/configs`);
-            
+            const configsColRef = collection(appState.db, `artifacts/${__app_id}/users/${appState.currentUserId}/configs`);
             // Usar onSnapshot para atualizações em tempo real
             onSnapshot(configsColRef, (snapshot) => {
                 let configs = [];
@@ -1297,7 +1553,7 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
                             giro: data.personalizationGiro,
                             arrasto: data.personalizationArrasto
                         },
-                        values: { // Reconstrói o objeto 'values' a partir dos campos do Firestore
+                        values: { 
                             general: data.general,
                             redDot: data.redDot,
                             aim2x: data.aim2x,
@@ -1309,26 +1565,20 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
                 });
 
                 // Ordenar por timestamp (o mais recente primeiro).
-                // Converte a string de data pt-BR para um objeto Date para ordenação.
                 configs.sort((a, b) => {
                     const parseDateString = (dateStr) => {
-                        // Formato: DD/MM/YYYY, HH:MM:SS
                         const parts = dateStr.match(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}):(\d{2}):(\d{2})/);
                         if (parts) {
-                            // Constrói a string no formato ISO YYYY-MM-DDTHH:MM:SS para Date.parse()
                             return new Date(`${parts[3]}-${parts[2]}-${parts[1]}T${parts[4]}:${parts[5]}:${parts[6]}`);
                         }
-                        return new Date(0); // Retorna uma data muito antiga para que configs sem data fiquem no final
+                        return new Date(0); 
                     };
                     const dateA = parseDateString(a.timestamp);
                     const dateB = parseDateString(b.timestamp);
-                    return dateB.getTime() - dateA.getTime(); // Ordena do mais novo para o mais antigo
+                    return dateB.getTime() - dateA.getTime(); 
                 });
-
-
                 // Limitar ao número máximo de itens
                 configs = configs.slice(0, HISTORY_MAX_ITEMS);
-
                 historyContainer.innerHTML = '';
                 if (configs.length === 0) {
                     noHistoryMessage.classList.remove('hidden');
@@ -1352,8 +1602,17 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
                                 <div>Mira 4x: <span class="${getFeedbackClass(valuesToDisplay.aim4x)}">${valuesToDisplay.aim4x} ${getFeedbackIcon(valuesToDisplay.aim4x)}</span></div>
                                 <div>AWM: <span class="${getFeedbackClass(valuesToDisplay.awm)}">${valuesToDisplay.awm} ${getFeedbackIcon(valuesToDisplay.awm)}</span></div>
                             </div>
+                            <button class="btn-action w-full mt-4 apply-history-btn" data-config-id="${config.id}">APLICAR</button>
                         `;
                         historyContainer.appendChild(historyItem);
+                    });
+
+                    // Adicionar listeners aos novos botões 'Aplicar'
+                    document.querySelectorAll('.apply-history-btn').forEach(button => {
+                        button.addEventListener('click', (event) => {
+                            const configId = event.target.dataset.configId;
+                            applyHistoryConfig(configId, configs);
+                        });
                     });
                 }
             }, (error) => {
@@ -1363,10 +1622,69 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
         }
 
         /**
+         * Aplica uma configuração do histórico às seleções e exibe os resultados.
+         * @param {string} configId - O ID da configuração no histórico.
+         * @param {Array} configs - O array de configurações carregadas.
+         */
+        function applyHistoryConfig(configId, configs) {
+            const configToApply = configs.find(c => c.id === configId);
+            if (!configToApply) {
+                showModal('Configuração não encontrada no histórico.');
+                return;
+            }
+
+            // Reseta para o primeiro passo para ter um fluxo limpo ao aplicar histórico
+            appState.currentStep = 1; 
+            showStep(appState.currentStep); 
+
+            // Apply history values to appState
+            appState.deviceLevel = configToApply.deviceLevel;
+            appState.role = configToApply.role;
+            appState.aimStyle = configToApply.aimStyle;
+            appState.personalizationGiro = configToApply.personalization.giro;
+            appState.personalizationArrasto = configToApply.personalization.arrasto;
+            appState.lastCalculatedConfig = { ...configToApply, adjustedValues: { ...configToApply.values } }; 
+
+            // Update UI buttons to reflect applied configuration
+            document.querySelectorAll('.btn-option').forEach(btn => {
+                const type = btn.dataset.type;
+                const value = btn.dataset.value;
+                const q = btn.dataset.q;
+
+                let shouldBeActive = false;
+                if (type === 'deviceLevel' && appState.deviceLevel === value) shouldBeActive = true;
+                else if (type === 'role' && appState.role === value) shouldBeActive = true;
+                else if (type === 'aimStyle' && appState.aimStyle === value) shouldBeActive = true;
+                else if (type === 'personalization') {
+                    if (q === 'giro' && appState.personalizationGiro === value) shouldBeActive = true;
+                    else if (q === 'arrasto' && appState.personalizationArrasto === value) shouldBeActive = true;
+                }
+
+                if (shouldBeActive) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Display results in the main sensitivity section
+            displayResults(appState.lastCalculatedConfig.adjustedValues);
+            showModal('Configuração aplicada com sucesso! Vá para o último passo do cálculo para ver os resultados.');
+            
+            sensSteps.forEach(step => step.classList.add('hidden'));
+            resultsCard.classList.remove('hidden');
+            resultsCard.classList.add('fade-in');
+            resultsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            saveAppStateToLocalStorage();
+        }
+
+
+        /**
          * Limpa todo o histórico de configurações do utilizador no Firestore.
          */
         async function clearHistory() {
-            if (!isAuthReady || !currentUserId) {
+            if (!appState.isAuthReady || !appState.currentUserId) {
                 showModal('Não foi possível limpar o histórico. A autenticação não está pronta.');
                 return;
             }
@@ -1375,24 +1693,24 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
             const confirmClear = await new Promise(resolve => {
                 showModal('Tem certeza que deseja apagar todo o seu histórico de configurações? Esta ação é irreversível.');
                 // Mudar a funcionalidade do modalOkBtn para um "Sim" temporário
-                const originalOkClick = modalOkBtn.onclick; // Guarda o original
+                const originalOkClick = modalOkBtn.onclick; 
                 modalOkBtn.textContent = 'Sim, Apagar';
                 modalOkBtn.onclick = () => { 
                     hideModal(); 
-                    modalOkBtn.textContent = 'OK'; // Restaura o texto
-                    modalOkBtn.onclick = originalOkClick; // Restaura o handler
+                    modalOkBtn.textContent = 'OK'; 
+                    modalOkBtn.onclick = originalOkClick; 
                     resolve(true); 
                 };
                 // Adicionar um botão "Não"
                 const cancelBtn = document.createElement('button');
                 cancelBtn.textContent = 'Não';
-                cancelBtn.className = 'modal-btn ml-4 bg-gray-500 hover:bg-gray-600';
+                cancelBtn.className = 'modal-btn ml-4 bg-gray-500 hover:bg-gray-600'; 
                 cancelBtn.onclick = () => {
                     hideModal();
-                    modalOkBtn.textContent = 'OK'; // Restaura o texto
-                    modalOkBtn.onclick = originalOkClick; // Restaura o handler
+                    modalOkBtn.textContent = 'OK'; 
+                    modalOkBtn.onclick = originalOkClick; 
                     resolve(false);
-                    cancelBtn.remove(); // Remove o botão "Não"
+                    cancelBtn.remove(); 
                 };
                 customModal.querySelector('.modal-content').appendChild(cancelBtn);
             });
@@ -1403,7 +1721,7 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
 
             try {
                 // Obter todas as configurações do utilizador
-                const configsCollectionRef = collection(db, `artifacts/${__app_id}/users/${currentUserId}/configs`);
+                const configsCollectionRef = collection(appState.db, `artifacts/${__app_id}/users/${appState.currentUserId}/configs`);
                 const querySnapshot = await getDocs(configsCollectionRef);
 
                 if (querySnapshot.empty) {
@@ -1412,15 +1730,12 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
                 }
 
                 // Deletar cada documento individualmente
-                // Para um grande número de documentos, é melhor usar operações em lote no lado do servidor (Cloud Functions)
                 const deletePromises = [];
                 querySnapshot.forEach((docItem) => {
-                    deletePromises.push(deleteDoc(doc(db, `artifacts/${__app_id}/users/${currentUserId}/configs`, docItem.id)));
+                    deletePromises.push(deleteDoc(doc(appState.db, `artifacts/${__app_id}/users/${appState.currentUserId}/configs`, docItem.id)));
                 });
-
                 await Promise.all(deletePromises);
                 showModal('Histórico de configurações limpo com sucesso!');
-                // onSnapshot irá atualizar a UI automaticamente após a exclusão
             } catch (error) {
                 console.error('Erro ao limpar histórico do Firestore:', error);
                 showModal('Erro ao limpar o histórico. Tente novamente mais tarde.');
@@ -1432,13 +1747,13 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
          * Exports the last calculated (or adjusted) configuration as an HTML file.
          */
         function exportConfiguration() {
-            if (!lastCalculatedConfig) {
+            if (!appState.lastCalculatedConfig) {
                 showModal('Nenhuma configuração para exportar. Por favor, calcule uma primeiro.');
                 return;
             }
 
-            const { device, deviceLevel, role, aimStyle, personalization, timestamp } = lastCalculatedConfig;
-            const valuesToExport = lastCalculatedConfig.adjustedValues || lastCalculatedConfig.values;
+            const { device, deviceLevel, role, aimStyle, personalization, timestamp } = appState.lastCalculatedConfig;
+            const valuesToExport = appState.lastCalculatedConfig.adjustedValues || appState.lastCalculatedConfig.values;
 
             const dateForFilename = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').split('.')[0];
             const fileName = `sensibilidade_${deviceLevel}_${role}_${dateForFilename}.html`;
@@ -1452,9 +1767,11 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Orbitron', sans-serif; background-color: #0d0d1a; color: #e0e0e0; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; background-color: #1a1a2e; border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); border: 2px solid #8a2be2; }
+        .container { max-width: 600px; margin: 0 auto; background-color: #1a1a2e; border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        border: 2px solid #8a2be2; }
         h1 { text-align: center; color: #00bfff; margin-bottom: 20px; }
-        .card { background-color: #2a2a4a; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid #4a4a70; }
+        .card { background-color: #2a2a4a; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1.5rem;
+        border: 1px solid #4a4a70; }
         p strong { color: #c080ff; }
         .row { display: flex; flex-wrap: wrap; gap: 1rem; }
         .col { flex: 1 1 45%; min-width: 150px; }
@@ -1502,6 +1819,7 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+            showCopySuccessMessage('Configuração exportada com sucesso!'); 
         }
 
         // === FUNÇÕES DE IA (GOOGLE GEMINI) ===
@@ -1511,7 +1829,7 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
          * @param {string} [term] - Optional: The term to explain if feature is 'glossary'.
          */
         async function generateAiResponse(feature, term = null) {
-            let displayElement, loadingElement, buttonElement;
+            let displayElement, loadingElement, buttonElement, againButtonElement;
             let prompt = "";
 
             // Determine which display elements to use
@@ -1519,13 +1837,17 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
                 displayElement = aiTipDisplay;
                 loadingElement = aiTipLoading;
                 buttonElement = getAiTipBtn;
+                againButtonElement = getAiTipAgainBtn; // Assign the "again" button
             } else if (feature === 'training') {
                 displayElement = trainingSuggestionDisplay;
                 loadingElement = trainingLoading;
                 buttonElement = getTrainingBtn;
+                againButtonElement = getTrainingAgainBtn; // Assign the "again" button
             } else if (feature === 'glossary') {
                 displayElement = glossaryExplanationDisplay;
                 loadingElement = glossaryLoading;
+                // For glossary, disable all term buttons while loading
+                glossaryTermButtons.forEach(btn => btn.disabled = true);
             } else {
                 showModal('Funcionalidade de IA desconhecida.');
                 return;
@@ -1533,8 +1855,9 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
 
             // Basic validation for profile-dependent features
             if ((feature === 'tip' || feature === 'training') &&
-                (!deviceLevel || !role || !aimStyle || !personalizationGiro || !personalizationArrasto)) {
+                (!appState.deviceLevel || !appState.role || !appState.aimStyle || !appState.personalizationGiro || !appState.personalizationArrasto)) {
                 showModal('Por favor, selecione todas as opções para obter uma dica/treino da IA personalizada.');
+                if (feature === 'glossary') glossaryTermButtons.forEach(btn => btn.disabled = false);
                 return;
             }
             
@@ -1542,27 +1865,28 @@ Exemplo de formato JSON: {"general": 90, "redDot": 85, "aim2x": 70, "aim4x": 55,
             displayElement.textContent = '';
             loadingElement.classList.remove('hidden');
             if (buttonElement) buttonElement.disabled = true;
+            if (againButtonElement) againButtonElement.classList.add('hidden'); // Hide "Generate Again" while loading
 
             // Construct prompt based on feature
             if (feature === 'tip') {
                 prompt = `Dado o meu perfil de jogador de Free Fire:
-- Nível do Dispositivo: ${deviceLevel}
-- Função no Time: ${role}
-- Estilo de Mira: ${aimStyle}
-- Preferência de Giro (Sensibilidade Geral): ${personalizationGiro}
-- Velocidade de Arrasto (Swipe na Tela): ${personalizationArrasto}
+- Nível do Dispositivo: ${appState.deviceLevel}
+- Função no Time: ${appState.role}
+- Estilo de Mira: ${appState.aimStyle}
+- Preferência de Giro (Sensibilidade Geral): ${appState.personalizationGiro}
+- Velocidade de Arrasto (Swipe na Tela): ${appState.personalizationArrasto}
 
 Me dê uma dica estratégica ou um conselho de jogo de Free Fire, com base nessas informações.
 Seja conciso e direto ao ponto, como um treinador profissional. Inclua emojis e finalize com um slogan motivacional curto.`;
             } else if (feature === 'training') {
-                const { general, redDot, aim2x, aim4x, awm } = lastCalculatedConfig.adjustedValues;
+                const { general, redDot, aim2x, aim4x, awm } = appState.lastCalculatedConfig ? appState.lastCalculatedConfig.adjustedValues : {};
                 prompt = `Sou um jogador de Free Fire com o seguinte perfil:
-- Nível do Dispositivo: ${deviceLevel}
-- Função no Time: ${role}
-- Estilo de Mira: ${aimStyle}
+- Nível do Dispositivo: ${appState.deviceLevel}
+- Função no Time: ${appState.role}
+- Estilo de Mira: ${appState.aimStyle}
 - Sensibilidade atual (Geral:${general}, Red Dot:${redDot}, Mira 2x:${aim2x}, Mira 4x:${aim4x}, AWM:${awm})
-- Preferência de Giro: ${personalizationGiro}
-- Velocidade de Arrasto: ${personalizationArrasto}
+- Preferência de Giro: ${appState.personalizationGiro}
+- Velocidade de Arrasto: ${appState.personalizationArrasto}
 
 Sugira um plano de treino curto (2-3 exercícios) dentro do jogo Free Fire para eu melhorar minha performance, considerando meu perfil e sensibilidade.
 Foco em melhorar a mira e movimentação. Seja prático, conciso, e inclua emojis. Finalize com uma frase motivacional.`;
@@ -1576,7 +1900,6 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
 
             const payload = { contents: chatHistory };
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
-
             try {
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -1598,6 +1921,7 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
                     result.candidates[0].content.parts.length > 0) {
                     const text = result.candidates[0].content.parts[0].text;
                     displayElement.textContent = text;
+                    if (againButtonElement) againButtonElement.classList.remove('hidden'); // Show "Generate Again" button
                 } else {
                     console.warn('Resposta da API Gemini sem conteúdo esperado:', result);
                     displayElement.textContent = 'Não foi possível gerar uma resposta. 🤔';
@@ -1609,6 +1933,7 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
             } finally {
                 loadingElement.classList.add('hidden');
                 if (buttonElement) buttonElement.disabled = false;
+                if (feature === 'glossary') glossaryTermButtons.forEach(btn => btn.disabled = false); // Re-habilitar
             }
         }
 
@@ -1616,30 +1941,42 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
          * Copia o texto de um elemento para a área de transferência do utilizador.
          * @param {string} elementId - O ID do elemento cujo texto será copiado.
          */
-        function copyToClipboard(elementId) {
+        async function copyToClipboard(elementId) { 
             const element = document.getElementById(elementId);
             if (element) {
-                const textToCopy = element.textContent.split(' ')[0]; // Pega apenas o número, ignorando o emoji ou "ms"
-                const textarea = document.createElement('textarea');
-                textarea.value = textToCopy;
-                document.body.appendChild(textarea);
-                textarea.select();
+                const textToCopy = element.textContent.split(' ')[0].trim(); 
+                
                 try {
-                    document.execCommand('copy');
+                    await navigator.clipboard.writeText(textToCopy); 
                     showCopySuccessMessage('Copiado: ' + textToCopy);
                 } catch (err) {
                     console.error('Falha ao copiar:', err);
                     showModal('Não foi possível copiar o valor. Por favor, tente manualmente.');
                 }
-                document.body.removeChild(textarea);
+            }
+        }
+
+        // Função para copiar o ID do usuário
+        async function copyUserId() {
+            const userIdText = USER_ID_DISPLAY_ELEMENT.textContent.replace('ID do Utilizador: ', '');
+            if (userIdText && userIdText !== 'Conectando à base de dados...') {
+                try {
+                    await navigator.clipboard.writeText(userIdText);
+                    showCopySuccessMessage('ID do Utilizador copiado!');
+                } catch (err) {
+                    console.error('Falha ao copiar ID do usuário:', err);
+                    showModal('Não foi possível copiar o ID do utilizador.');
+                }
+            } else {
+                showModal('ID do Utilizador não disponível para copiar.');
             }
         }
 
         // === FUNÇÕES DE MONITORAMENTO DE FPS ===
         let lastFrameTime = 0;
         const fpsHistory = [];
-        const FPS_SAMPLE_SIZE = 60; // Número de frames para calcular a média
-        const FPS_UPDATE_INTERVAL = 1000; // Atualiza a cada 1 segundo
+        const FPS_SAMPLE_SIZE = 60; 
+        const FPS_UPDATE_INTERVAL = 1000; 
         let fpsIntervalId;
 
         /**
@@ -1662,16 +1999,16 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
                 return;
             }
 
-            const deltaTime = currentTime - lastFrameTime; // Tempo em ms entre os frames
-            const currentFps = 1000 / deltaTime; // FPS = 1000ms / tempo por frame
+            const deltaTime = currentTime - lastFrameTime; 
+            const currentFps = 1000 / deltaTime; 
 
             fpsHistory.push(currentFps);
             if (fpsHistory.length > FPS_SAMPLE_SIZE) {
-                fpsHistory.shift(); // Remove o frame mais antigo
+                fpsHistory.shift(); 
             }
 
             lastFrameTime = currentTime;
-            requestAnimationFrame(calculateAndRenderFps); // Continua o loop
+            requestAnimationFrame(calculateAndRenderFps); 
         }
 
         /**
@@ -1682,30 +2019,35 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
                 fpsDisplay.textContent = '-- FPS';
                 fpsDisplay.classList.remove('performance-excellent', 'performance-good', 'performance-low');
                 fpsDisplay.classList.add('performance-unknown');
+                fpsIndicatorBox.classList.remove('excellent', 'good', 'low');
+                fpsIndicatorBox.style.backgroundColor = 'var(--secondary-blue)';
                 return;
             }
             const averageFps = fpsHistory.reduce((sum, fps) => sum + fps, 0) / fpsHistory.length;
             const roundedFps = Math.round(averageFps);
             fpsDisplay.textContent = `${roundedFps} FPS`;
 
-            // Aplica feedback visual
+            // Aplica feedback visual e cor do box
             fpsDisplay.classList.remove('performance-excellent', 'performance-good', 'performance-low', 'performance-unknown');
+            fpsIndicatorBox.classList.remove('excellent', 'good', 'low'); 
+
             if (roundedFps >= 60) {
                 fpsDisplay.classList.add('performance-excellent');
+                fpsIndicatorBox.classList.add('excellent');
             } else if (roundedFps >= 30) {
                 fpsDisplay.classList.add('performance-good');
+                fpsIndicatorBox.classList.add('good');
             } else {
                 fpsDisplay.classList.add('performance-low');
+                fpsIndicatorBox.classList.add('low');
             }
         }
 
 
         // === FUNÇÕES DE MONITORAMENTO DE PING ===
-        // Usando um endpoint mais leve e confiável para medição de ping.
-        // O endpoint cloudflare.com/cdn-cgi/trace é excelente para isso, pois é leve e amplamente distribuído.
-        const PING_TARGET_URL = 'https://www.cloudflare.com/cdn-cgi/trace'; 
-        const PING_INTERVAL = 5000; // Medir ping a cada 5 segundos
-        const PING_TIMEOUT = 3000; // Timeout para a requisição de ping em ms
+        const PING_TARGET_URL = 'https://www.cloudflare.com/cdn-cgi/trace';
+        const PING_INTERVAL = 5000; 
+        const PING_TIMEOUT = 3000; 
         let pingIntervalId;
 
         /**
@@ -1713,11 +2055,11 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
          */
         function initPingMonitor() {
             if (pingIntervalId) clearInterval(pingIntervalId);
-            pingDisplay.textContent = 'Medindo...'; // Estado inicial de carregamento
+            pingDisplay.textContent = 'Medindo...'; 
             pingDisplay.classList.remove('performance-excellent', 'performance-good', 'performance-low');
             pingDisplay.classList.add('performance-unknown');
 
-            measurePing(); // Mede o ping imediatamente
+            measurePing(); 
             pingIntervalId = setInterval(measurePing, PING_INTERVAL);
         }
 
@@ -1726,32 +2068,25 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
          */
         async function measurePing() {
             const startTime = performance.now();
-            let rttValue = 'Erro'; // Usar uma string para "Erro" ou "Timeout"
-            let statusClass = 'performance-low'; // Classe padrão para erro
+            let rttValue = 'Erro'; 
+            let statusClass = 'performance-low'; 
 
             try {
-                // Cria um AbortController para implementar o timeout
                 const abortController = new AbortController();
                 const timeoutId = setTimeout(() => abortController.abort(), PING_TIMEOUT);
 
-                // Adiciona um parâmetro de cache busting para garantir que a requisição não seja cacheada pelo navegador.
-                // Isso garante uma medição de RTT "fresca" a cada vez.
                 const urlWithCacheBuster = `${PING_TARGET_URL}?_=${Date.now()}`;
-
                 const response = await fetch(urlWithCacheBuster, { 
-                    cache: 'no-store', // Impede que o navegador use o cache HTTP para esta URL
-                    signal: abortController.signal // Associa o sinal de abort ao fetch
+                    cache: 'no-store', 
+                    signal: abortController.signal 
                 });
+                clearTimeout(timeoutId); 
 
-                clearTimeout(timeoutId); // Limpa o timeout se a requisição completar a tempo
-
-                // Verifica se a resposta foi HTTP OK (status 2xx)
                 if (response.ok) { 
                     const endTime = performance.now();
                     const rtt = Math.round(endTime - startTime);
-                    rttValue = rtt; // Atribui o valor numérico
+                    rttValue = rtt; 
                     
-                    // Determina a classe de feedback com base no RTT
                     if (rtt <= 50) {
                         statusClass = 'performance-excellent';
                     } else if (rtt <= 150) {
@@ -1760,16 +2095,15 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
                         statusClass = 'performance-low';
                     }
                 } else {
-                    // Se a resposta não foi OK (e.g., 404, 500), ainda medimos o RTT
                     const endTime = performance.now();
                     const rtt = Math.round(endTime - startTime);
-                    rttValue = rtt; // Ainda mostra o número
-                    statusClass = 'performance-low'; // Mas indica que algo não está 100% OK
+                    rttValue = rtt; 
+                    statusClass = 'performance-low'; 
                     console.warn(`Ping target retornou resposta não-OK (${response.status}). Latência: ${rtt}ms`);
                 }
 
             } catch (error) {
-                clearTimeout(timeoutId); // Garante que o timeout é limpo
+                clearTimeout(timeoutId);
                 if (error.name === 'AbortError') {
                     console.warn('Requisição de Ping atingiu o tempo limite.');
                     rttValue = 'Timeout';
@@ -1780,32 +2114,65 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
                     statusClass = 'performance-low';
                 }
             } finally {
-                // Atualiza o display com o RTT ou a mensagem de erro
-                // Remove todas as classes de performance e adiciona a correta
                 pingDisplay.classList.remove('performance-excellent', 'performance-good', 'performance-low', 'performance-unknown');
                 pingDisplay.classList.add(statusClass);
 
-                // Ajuste para exibir "ms" apenas quando for um número
                 if (typeof rttValue === 'number') {
                     pingDisplay.textContent = `${rttValue} ms`;
                 } else {
-                    pingDisplay.textContent = rttValue; // Ex: "Erro" ou "Timeout"
+                    pingDisplay.textContent = rttValue; 
                 }
             }
         }
 
-        // === FUNÇÕES DO CONVERSOR DE DPI/SENSIBILIDADE (NOVO) ===
+        // === FUNÇÕES DO CONVERSOR DE DPI/SENSIBILIDADE ===
+        /**
+         * Limpa o feedback de erro dos inputs do conversor.
+         */
+        function clearConverterErrors() {
+            currentDPIInput.classList.remove('input-error');
+            currentDPIError.textContent = '';
+            currentDPIError.classList.add('hidden');
+            currentSensInput.classList.remove('input-error');
+            currentSensError.textContent = '';
+            currentSensError.classList.add('hidden');
+            targetDPIInput.classList.remove('input-error');
+            targetDPIError.textContent = '';
+            targetDPIError.classList.add('hidden');
+        }
+
         /**
          * Realiza o cálculo de conversão de sensibilidade e atualiza o display.
          */
         function convertSensitivity() {
+            clearConverterErrors(); // Limpa erros anteriores
+
             const currentDPI = parseFloat(currentDPIInput.value);
             const currentSens = parseFloat(currentSensInput.value);
             const targetDPI = parseFloat(targetDPIInput.value);
 
-            if (isNaN(currentDPI) || isNaN(currentSens) || isNaN(targetDPI) ||
-                currentDPI <= 0 || currentSens <= 0 || targetDPI <= 0) {
-                showModal('Por favor, insira valores numéricos válidos e maiores que zero para DPI e Sensibilidade.');
+            let hasError = false;
+
+            if (isNaN(currentDPI) || currentDPI <= 0) {
+                currentDPIInput.classList.add('input-error');
+                currentDPIError.textContent = 'DPI atual inválido. Deve ser um número positivo.';
+                currentDPIError.classList.remove('hidden');
+                hasError = true;
+            }
+            if (isNaN(currentSens) || currentSens <= 0) {
+                currentSensInput.classList.add('input-error');
+                currentSensError.textContent = 'Sensibilidade atual inválida. Deve ser um número positivo.';
+                currentSensError.classList.remove('hidden');
+                hasError = true;
+            }
+            if (isNaN(targetDPI) || targetDPI <= 0) {
+                targetDPIInput.classList.add('input-error');
+                targetDPIError.textContent = 'DPI alvo inválido. Deve ser um número positivo.';
+                targetDPIError.classList.remove('hidden');
+                hasError = true;
+            }
+
+            if (hasError) {
                 convertedSensDisplay.textContent = '--';
                 return;
             }
@@ -1817,25 +2184,65 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
         /**
          * Copia o valor da sensibilidade convertida para a área de transferência.
          */
-        function copyConvertedSensitivity() {
+        async function copyConvertedSensitivity() { 
             const textToCopy = convertedSensDisplay.textContent;
             if (textToCopy === '--' || textToCopy === 'Erro') {
                 showModal('Nenhuma sensibilidade válida para copiar.');
                 return;
             }
-            const textarea = document.createElement('textarea');
-            textarea.value = textToCopy;
-            document.body.appendChild(textarea);
-            textarea.select();
             try {
-                document.execCommand('copy');
+                await navigator.clipboard.writeText(textToCopy); 
                 showCopySuccessMessage('Sensibilidade Convertida Copiada!');
             } catch (err) {
                 console.error('Falha ao copiar sensibilidade convertida:', err);
                 showModal('Não foi possível copiar a sensibilidade convertida. Por favor, tente manualmente.');
             }
-            document.body.removeChild(textarea);
         }
+
+        // Funções para persistência de estado no localStorage
+        function saveAppStateToLocalStorage() {
+            try {
+                localStorage.setItem('soberanosAppState', JSON.stringify({
+                    currentStep: appState.currentStep,
+                    deviceLevel: appState.deviceLevel,
+                    role: appState.role,
+                    aimStyle: appState.aimStyle,
+                    personalizationGiro: appState.personalizationGiro,
+                    personalizationArrasto: appState.personalizationArrasto,
+                    // Save last calculated config as well
+                    lastCalculatedConfig: appState.lastCalculatedConfig 
+                }));
+            } catch (e) {
+                console.warn('Não foi possível salvar o estado no localStorage:', e);
+            }
+        }
+
+        function loadAppStateFromLocalStorage() {
+            try {
+                const savedState = localStorage.getItem('soberanosAppState');
+                if (savedState) {
+                    const parsedState = JSON.parse(savedState);
+                    appState.currentStep = parsedState.currentStep || 1;
+                    appState.deviceLevel = parsedState.deviceLevel || '';
+                    appState.role = parsedState.role || '';
+                    appState.aimStyle = parsedState.aimStyle || '';
+                    appState.personalizationGiro = parsedState.personalizationGiro || '';
+                    appState.personalizationArrasto = parsedState.personalizationArrasto || '';
+                    appState.lastCalculatedConfig = parsedState.lastCalculatedConfig || null; 
+                }
+            } catch (e) {
+                console.warn('Não foi possível carregar o estado do localStorage:', e);
+                // Reset state if loading fails to prevent corrupted state
+                appState.currentStep = 1;
+                appState.deviceLevel = '';
+                appState.role = '';
+                appState.aimStyle = '';
+                appState.personalizationGiro = '';
+                appState.personalizationArrasto = '';
+                appState.lastCalculatedConfig = null;
+            }
+        }
+
 
         // === EVENT LISTENERS ===
         document.addEventListener('DOMContentLoaded', async () => {
@@ -1846,38 +2253,34 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
             initFpsMonitor();
             initPingMonitor();
 
-            // Detecta o dispositivo *após* as constantes de DEVICE_LEVELS estarem definidas
-            detectDevice();
+            // Inicializa o fluxo conversacional de sensibilidade (incluindo carregamento do localStorage)
+            initConversationalSensitivity();
 
             // --- INICIALIZAÇÃO E AUTENTICAÇÃO FIRESTORE ---
             try {
-                // As variáveis globais __app_id, __firebase_config e __initial_auth_token
-                // são injetadas pelo ambiente Canvas.
                 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
                 const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-                const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null; 
 
-                app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
+                appState.app = initializeApp(firebaseConfig);
+                appState.db = getFirestore(appState.app);
+                appState.auth = getAuth(appState.app);
 
-                onAuthStateChanged(auth, async (user) => {
+                onAuthStateChanged(appState.auth, async (user) => {
                     if (user) {
-                        currentUserId = user.uid;
-                        USER_ID_DISPLAY_ELEMENT.textContent = `ID do Utilizador: ${currentUserId}`;
-                        isAuthReady = true;
-                        loadConfigurationsFromFirestore(); // Carregar configs após autenticação
+                        appState.currentUserId = user.uid;
+                        USER_ID_DISPLAY_ELEMENT.textContent = `ID do Utilizador: ${appState.currentUserId}`;
+                        appState.isAuthReady = true;
+                        loadConfigurationsFromFirestore(); 
                     } else {
-                        // Se não houver token inicial, faça login anonimamente
                         if (!initialAuthToken) {
-                            await signInAnonymously(auth);
+                            await signInAnonymously(appState.auth);
                         } else {
-                            // Se houver token, tente autenticar com ele
                             try {
-                                await signInWithCustomToken(auth, initialAuthToken);
+                                await signInWithCustomToken(appState.auth, initialAuthToken);
                             } catch (error) {
                                 console.error("Erro ao autenticar com token personalizado, tentando login anônimo:", error);
-                                await signInAnonymously(auth);
+                                await signInAnonymously(appState.auth);
                             }
                         }
                     }
@@ -1888,7 +2291,7 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
                 showModal("Erro ao inicializar a base de dados. Algumas funcionalidades podem não estar disponíveis.");
             }
 
-            // Listeners para seleção de opções
+            // Listeners para seleção de opções (agora para cada passo)
             levelButtons.forEach(button => {
                 button.addEventListener('click', () => selectOption('deviceLevel', button.dataset.value, button));
             });
@@ -1901,9 +2304,18 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
             personalizationButtons.forEach(button => {
                 button.addEventListener('click', () => selectOption('personalization', button.dataset.value, button, button.dataset.q));
             });
+            
+            // Listeners para os botões de navegação dos passos
+            step1NextBtn.addEventListener('click', goToNextStep);
+            step2PrevBtn.addEventListener('click', goToPrevStep);
+            step2NextBtn.addEventListener('click', goToNextStep);
+            step3PrevBtn.addEventListener('click', goToPrevStep);
+            step3NextBtn.addEventListener('click', goToNextStep);
+            step4PrevBtn.addEventListener('click', goToPrevStep);
+            step4NextBtn.addEventListener('click', goToNextStep);
+            step5PrevBtn.addEventListener('click', goToPrevStep);
+            step5CalculateBtn.addEventListener('click', calculateSensitivity); 
 
-            // Listener para o botão de calcular sensibilidade (agora com IA)
-            calculateBtn.addEventListener('click', calculateSensitivity);
             // Listener para o botão de exportar configuração
             exportBtn.addEventListener('click', exportConfiguration);
             // Listener para o novo botão "Copiar Todas as Sensibilidades"
@@ -1912,24 +2324,33 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
             clearSelectionsBtn.addEventListener('click', clearSelections);
             // Listener para o novo botão "Limpar Histórico"
             clearHistoryBtn.addEventListener('click', clearHistory);
-            
             // Listener para o botão de Dicas da IA
             getAiTipBtn.addEventListener('click', () => generateAiResponse('tip'));
+            // Listener para o botão Gerar Novamente Dica
+            getAiTipAgainBtn.addEventListener('click', () => generateAiResponse('tip'));
             // Listener para o botão de Sugestão de Treino Personalizado
             getTrainingBtn.addEventListener('click', () => {
-                if (!lastCalculatedConfig) {
+                if (!appState.lastCalculatedConfig) {
                     showModal('Por favor, calcule a sua sensibilidade primeiro para obter um treino personalizado.');
                     return;
                 }
                 generateAiResponse('training');
             });
+            // Listener para o botão Gerar Novamente Treino
+            getTrainingAgainBtn.addEventListener('click', () => {
+                if (!appState.lastCalculatedConfig) {
+                    showModal('Por favor, calcule a sua sensibilidade primeiro para obter um treino personalizado.');
+                    return;
+                }
+                generateAiResponse('training');
+            });
+
             // Listeners para os botões do Glossário Gamer
             glossaryTermButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     generateAiResponse('glossary', button.dataset.term);
                 });
             });
-
             // Listeners para os botões de ajuste fino de sensibilidade
             document.querySelectorAll('.fine-tune-btn').forEach(button => {
                 button.addEventListener('click', (event) => {
@@ -1938,7 +2359,6 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
                     adjustSensitivity(sensKey, change);
                 });
             });
-
             // LISTENERS PARA BOTÕES DE COPIAR INDIVIDUALMENTE
             document.querySelectorAll('.copy-btn').forEach(button => {
                 button.addEventListener('click', (event) => {
@@ -1946,17 +2366,34 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
                     copyToClipboard(targetId);
                 });
             });
+            // Listener para copiar o ID do usuário
+            COPY_USER_ID_BTN.addEventListener('click', copyUserId);
 
-            // --- LISTENERS DO CONVERSOR DE DPI/SENSIBILIDADE (NOVO) ---
+            // --- LISTENERS DO CONVERSOR DE DPI/SENSIBILIDADE ---
             convertSensBtn.addEventListener('click', convertSensitivity);
-            copyConvertedSensBtn.addEventListener('click', () => copyToClipboard('converted-sens-display')); // Reutiliza a função de copiar
+            copyConvertedSensBtn.addEventListener('click', () => copyToClipboard('converted-sens-display')); 
+
+            // Listeners para os inputs do conversor para feedback de validação em tempo real
+            currentDPIInput.addEventListener('input', clearConverterErrors);
+            currentSensInput.addEventListener('input', clearConverterErrors);
+            targetDPIInput.addEventListener('input', clearConverterErrors);
 
             // Listeners para o modal personalizado
             closeModalBtn.addEventListener('click', hideModal);
-            modalOkBtn.addEventListener('click', hideModal); // Handler padrão. É temporariamente substituído em clearHistory.
+            modalOkBtn.addEventListener('click', hideModal); 
             window.addEventListener('click', (event) => {
                 if (event.target === customModal) {
                     hideModal();
+                }
+            });
+
+            // Listeners para o modal "Sobre o App"
+            aboutBtn.addEventListener('click', showAboutModal);
+            closeAboutModalBtn.addEventListener('click', hideAboutModal);
+            aboutOkBtn.addEventListener('click', hideAboutModal);
+            window.addEventListener('click', (event) => {
+                if (event.target === aboutModal) {
+                    hideAboutModal();
                 }
             });
 
@@ -1978,9 +2415,23 @@ Seja conciso, claro e direto. Inclua um emoji relevante no início da explicaç�
                     button.classList.add('active', 'bg-purple-700', 'text-white');
                     button.classList.remove('bg-gray-700', 'text-gray-400', 'cursor-not-allowed');
                     document.getElementById(`${targetTab}-tab-content`).classList.remove('hidden');
+
+                    // If navigating away from Sensibilidade tab, reset its view to step 1
+                    if (targetTab === 'sensibilidade') {
+                        // Ensure the correct step is shown when returning to sensitivity tab
+                        showStep(appState.currentStep);
+                        // If a config was already calculated, show results.
+                        if(appState.lastCalculatedConfig) {
+                            resultsCard.classList.remove('hidden');
+                        }
+                    } else {
+                        // When leaving sensitivity tab, hide results card
+                        resultsCard.classList.add('hidden');
+                    }
                 });
             });
         });
     </script>
 </body>
 </html>
+
